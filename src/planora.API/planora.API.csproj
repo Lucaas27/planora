@@ -19,8 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\planora.Application\planora.Application.csproj" />
-      <ProjectReference Include="..\..\planora.Infrastructure\planora.Infrastructure.csproj" />
+      <ProjectReference Include="..\planora.Application\planora.Application.csproj" />
+      <ProjectReference Include="..\planora.Infrastructure\planora.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -16,11 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6003EE13
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.API.Tests", "tests\planora.API.Tests\planora.API.Tests.csproj", "{B030B905-7EE9-4B64-9FED-91DFEB85F3C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.Domain", "planora.Domain\planora.Domain.csproj", "{5136DFA6-6C3F-42C8-BDF0-8CB8728B9608}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.Domain", "src\planora.Domain\planora.Domain.csproj", "{5136DFA6-6C3F-42C8-BDF0-8CB8728B9608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.Infrastructure", "planora.Infrastructure\planora.Infrastructure.csproj", "{8CD1C5EB-7762-42FB-A52D-4EB44C5801F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.Infrastructure", "src\planora.Infrastructure\planora.Infrastructure.csproj", "{8CD1C5EB-7762-42FB-A52D-4EB44C5801F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.Application", "planora.Application\planora.Application.csproj", "{E3D5A1FF-77FD-4886-9056-B266FB4C9397}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "planora.Application", "src\planora.Application\planora.Application.csproj", "{E3D5A1FF-77FD-4886-9056-B266FB4C9397}"
 EndProject
 
 Global
