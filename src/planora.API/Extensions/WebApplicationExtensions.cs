@@ -11,7 +11,7 @@ public static class WebApplicationExtensions
     /// </summary>
     /// <param name="app">The <see cref="WebApplication" /> instance.</param>
     /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-    public static async Task SeedDatabaseAsync(this WebApplication app)
+    public static async Task SeedDatabaseAndRunMigrationsAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
@@ -22,9 +22,12 @@ public static class WebApplicationExtensions
             var context = services.GetRequiredService<AppDbContext>();
             await context.Database.MigrateAsync();
 
-            // Seed Data
-            var seeder = services.GetRequiredService<IDbSeeder>();
-            await seeder.SeedActivityDataAsync();
+            // Seed Data only in development environment
+            if (app.Environment.IsDevelopment())
+            {
+                var seeder = services.GetRequiredService<IDbSeeder>();
+                await seeder.SeedActivityDataAsync();
+            }
         }
         catch (Exception e)
         {
