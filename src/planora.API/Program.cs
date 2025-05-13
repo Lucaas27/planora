@@ -1,8 +1,14 @@
+using planora.API.Extensions;
+using planora.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+var config = builder.Configuration;
 
 // Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+services.AddControllers();
+services.AddOpenApi();
+services.AddInfrastructureServices(config);
 
 var app = builder.Build();
 
@@ -18,4 +24,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 
+// Seed the database before running the application
+await app.SeedDatabaseAsync();
+
 await app.RunAsync();
+

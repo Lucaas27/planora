@@ -1,0 +1,113 @@
+[
+  {
+    "Name": "Past Activity 1",
+    "Description": "Activity from about 11 months ago",
+    "Date": "2024-06-09T14:30:00.000Z",
+    "Category": "drinks",
+    "IsActive": false,
+    "City": "London",
+    "Location": "The Lamb and Flag, 33, Rose Street, Seven Dials, Covent Garden, London",
+    "Latitude": 51.51171665,
+    "Longitude": -0.1256611057818921
+  },
+  {
+    "Name": "Past Activity 2",
+    "Description": "Activity from about 10 months ago",
+    "Date": "2024-07-09T14:30:00.000Z",
+    "Category": "culture",
+    "IsActive": false,
+    "City": "Paris",
+    "Location": "Louvre Museum, Rue Saint-Honoré, Quartier du Palais Royal",
+    "Latitude": 48.8611473,
+    "Longitude": 2.33802768704666
+  },
+  {
+    "Name": "Future Activity 1",
+    "Description": "Activity in September 2026",
+    "Date": "2026-09-09T14:30:00.000Z",
+    "Category": "culture",
+    "IsActive": true,
+    "City": "London",
+    "Location": "Natural History Museum",
+    "Latitude": 51.496510900000004,
+    "Longitude": -0.17600190725447445
+  },
+  {
+    "Name": "Future Activity 2",
+    "Description": "Activity in October 2026",
+    "Date": "2026-10-09T14:30:00.000Z",
+    "Category": "music",
+    "IsActive": true,
+    "City": "London",
+    "Location": "The O2",
+    "Latitude": 51.502936649999995,
+    "Longitude": 0.0032029278126681844
+  },
+  {
+    "Name": "Future Activity 3",
+    "Description": "Activity in November 2026",
+    "Date": "2026-11-09T14:30:00.000Z",
+    "Category": "drinks",
+    "IsActive": true,
+    "City": "London",
+    "Location": "The Mayflower",
+    "Latitude": 51.501778,
+    "Longitude": -0.053577
+  },
+  {
+    "Name": "Future Activity 4",
+    "Description": "Activity in December 2026",
+    "Date": "2026-12-09T14:30:00.000Z",
+    "Category": "drinks",
+    "IsActive": true,
+    "City": "London",
+    "Location": "The Blackfriar",
+    "Latitude": 51.512146650000005,
+    "Longitude": -0.10364680647106028
+  },
+  {
+    "Name": "Future Activity 5",
+    "Description": "Activity in July 2026",
+    "Date": "2026-07-09T14:30:00.000Z",
+    "Category": "culture",
+    "IsActive": true,
+    "City": "London",
+    "Location": "Sherlock Holmes Museum, 221b, Baker Street, Marylebone",
+    "Latitude": 51.5237629,
+    "Longitude": -0.1584743
+  },
+  {
+    "Name": "Future Activity 6",
+    "Description": "Activity in August 2026",
+    "Date": "2026-08-09T14:30:00.000Z",
+    "Category": "music",
+    "IsActive": true,
+    "City": "London",
+    "Location": "Roundhouse, Chalk Farm Road, Maitland Park",
+    "Latitude": 51.5432505,
+    "Longitude": -0.15197608174931165
+  },
+  {
+    "Name": "Future Activity 7",
+    "Description": "Activity in December 2026",
+    "Date": "2026-12-09T14:30:00.000Z",
+    "Category": "travel",
+    "IsActive": true,
+    "City": "London",
+    "Location": "River Thames",
+    "Latitude": 51.5575525,
+    "Longitude": -0.781404
+  },
+  {
+    "Name": "Future Activity 8",
+    "Description": "Activity in October 2026",
+    "Date": "2026-10-09T14:30:00.000Z",
+    "Category": "film",
+    "IsActive": true,
+    "City": "London",
+    "Location": "River Thames",
+    "Latitude": 51.5575525,
+    "Longitude": -0.781404
+  }
+]
+
