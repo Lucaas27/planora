@@ -6,22 +6,16 @@ var services = builder.Services;
 var config = builder.Configuration;
 
 // Add services to the container.
-services.AddControllers();
-services.AddOpenApi();
 services.AddInfrastructureServices(config);
+services.AddPresentationServices();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi/v1.json", "Open API V1"); });
-}
-
+app.ConfigureDevelopmentMiddleware();
 app.MapControllers();
 
-// Seed the database in development and run migrations before running the application
-await app.SeedDatabaseAndRunMigrationsAsync();
+// Configure database (migrations and seeding) before running the application
+await app.ConfigureDatabaseAsync();
 
 await app.RunAsync();
