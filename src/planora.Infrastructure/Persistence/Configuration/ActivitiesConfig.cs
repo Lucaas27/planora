@@ -9,20 +9,20 @@ namespace planora.Infrastructure.Persistence.Configuration;
 /// Configuration class for the <see cref="Activity"/> entity.
 /// Inherits common configuration from <see cref="BaseEntityTypeConfiguration{TEntity}"/>.
 /// </summary>
-internal class ActivitiesConfig :  BaseEntityTypeConfiguration<Activity>
+internal class ActivitiesConfig : BaseEntityTypeConfiguration<Activity>
 {
     public override void Configure(EntityTypeBuilder<Activity> builder)
     {
         // Apply base configuration for entities inheriting from BaseEntity.
         base.Configure(builder);
-        
+
         // Entity-specific configuration
         builder.ToTable("Activities");
-        
+
         builder.Property(a => a.Name)
             .IsRequired()
             .HasMaxLength(100);
-        
+
         builder.Property(a => a.Description)
             .IsRequired()
             .HasMaxLength(1000);
