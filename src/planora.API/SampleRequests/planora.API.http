@@ -1,0 +1,24 @@
+@API_HostAddress = https://localhost:5001/api
+
+### Root Endpoint
+# Returns API information
+GET {{API_HostAddress}}
+Accept: application/json
+
+###
+
+### Get All Activities
+# @name getAllActivities
+GET {{API_HostAddress}}/activities
+Accept: application/json
+
+###
+
+### Get Activity by ID
+# Uses the ID from the first activity
+@activityId = 299df0ac-d8d6-4388-9cf0-ecbe15623714
+GET {{API_HostAddress}}/activities/{{activityId}}
+Accept: application/json
+
+###
+
