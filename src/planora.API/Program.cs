@@ -12,10 +12,11 @@ services.AddPresentationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.ConfigureDevelopmentMiddleware();
 app.MapControllers();
+app.SetUpSwagger();
 
 // Configure database (migrations and seeding) before running the application
-await app.ConfigureDatabaseAsync();
+await app.ApplyMigrationsAsync();
+await app.SeedDevelopmentDataAsync();
 
 await app.RunAsync();

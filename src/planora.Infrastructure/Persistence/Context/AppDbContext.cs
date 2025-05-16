@@ -18,7 +18,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         base.OnModelCreating(modelBuilder);
 
         // Apply all configurations specified in types implementing IEntityTypeConfiguration.
-        // Located in Persistence/Configuration
+        // Located in Persistence/Extensions
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
     }
 
