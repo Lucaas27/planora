@@ -13,5 +13,6 @@ public static class ServiceCollectionExtensions
     {
         services.AddControllers();
         services.AddOpenApi();
+        services.AddCors();
     }
 }

@@ -12,6 +12,11 @@ services.AddPresentationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseCors(x => x
+    .WithOrigins("http://localhost:3000", "https://localhost:3000")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
+
 app.MapControllers();
 app.SetUpSwagger();
 
