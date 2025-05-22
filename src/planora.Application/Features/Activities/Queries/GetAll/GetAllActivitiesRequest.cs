@@ -1,6 +1,5 @@
-using MediatR;
-using planora.Domain.Entities;
+using planora.Application.Common.Mediator;
 
 namespace planora.Application.Features.Activities.Queries.GetAll;
 
-public sealed record GetAllActivitiesRequest : IRequest<IEnumerable<Activity>>;
+public sealed record GetAllActivitiesRequest : IQuery<IEnumerable<GetAllActivitiesResponse>>;
