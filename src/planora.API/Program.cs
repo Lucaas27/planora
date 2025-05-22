@@ -1,4 +1,5 @@
 using planora.API.Extensions;
+using planora.Application.Extensions;
 using planora.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var config = builder.Configuration;
 
 // Add services to the container.
 services.AddInfrastructureServices(config);
+services.AddApplicationServices();
 services.AddPresentationServices();
 
 var app = builder.Build();
