@@ -1,6 +1,6 @@
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using planora.Application.Behaviours.Logging;
+using planora.Application.Common.Mediator;
+using planora.Application.Features.Activities.Queries.GetAll;
 
 namespace planora.Application.Extensions;
 
@@ -10,10 +10,8 @@ public static class ServiceCollectionExtensions
     {
         var applicationAssembly = typeof(ServiceCollectionExtensions).Assembly;
 
-        services.AddMediatR(configuration =>
-        {
-            configuration.RegisterServicesFromAssembly(applicationAssembly);
-            configuration.AddBehavior(typeof(IPipelineBehavior<,>), typeof(RequestResponseLoggingBehaviour<,>));
-        });
+        services
+            .AddScoped<IQueryHandler<GetAllActivitiesRequest, IEnumerable<GetAllActivitiesResponse>>,
+                GetAllActivitiesHandler>();
     }
 }
