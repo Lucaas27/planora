@@ -1,8 +1,8 @@
-namespace planora.Application.Common.Mediator;
+namespace planora.Application.Interfaces.Mediator;
+
+public interface ICommand;
 
 /// <summary>
 ///     Marker interface for commands that don't return data
 /// </summary>
-public interface ICommand;
-
 public interface ICommand<TResponse>;
