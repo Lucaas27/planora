@@ -1,24 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
-using planora.API.Controllers.Common;
-using planora.Application.Common.Mediator;
+using planora.API.Common;
 using planora.Application.Features.Activities.Queries.GetAll;
+using planora.Application.Interfaces.Mediator;
 
 namespace planora.API.Controllers;
 
-public class ActivitiesController(IQueryHandler<GetAllActivitiesRequest, IEnumerable<GetAllActivitiesResponse>> handler)
-    : BaseApiController
+public class ActivitiesController(IMediator mediator)
+    : ApiController(mediator)
 {
     [HttpGet]
-    public async Task<ActionResult> GetAllActivities(CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllActivities(CancellationToken cancellationToken)
     {
-        var response = await handler.Handle(new GetAllActivitiesRequest(), cancellationToken);
-        return ProcessResponse(response);
-    }
+        var response = await Mediator.Query(new GetAllActivitiesRequest(), cancellationToken);
 
-    // [HttpGet("{id:guid}")]
-    // public async Task<ActionResult> GetActivityDetails(Guid id, CancellationToken cancellationToken)
-    // {
-    //     var response = await mediator.Send(new GetActivityByIdRequest(id), cancellationToken);
-    //     return ProcessResponse(response);
-    // }
+        return Ok(response);
+    }
 }

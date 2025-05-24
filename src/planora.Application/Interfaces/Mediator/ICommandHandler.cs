@@ -1,6 +1,4 @@
-using planora.Application.Common.Responses;
-
-namespace planora.Application.Common.Mediator;
+namespace planora.Application.Interfaces.Mediator;
 
 /// <summary>
 ///     Interface for command handlers that don't return data, only success/failure
@@ -8,11 +6,11 @@ namespace planora.Application.Common.Mediator;
 public interface ICommandHandler<in TCommand>
     where TCommand : ICommand
 {
-    Task<BaseResponse> Handle(TCommand command, CancellationToken cancellationToken);
+    Task Handle(TCommand command, CancellationToken cancellationToken);
 }
 
 public interface ICommandHandler<in TCommand, TResponse>
     where TCommand : ICommand<TResponse>
 {
-    Task<BaseResponse<TResponse>> Handle(TCommand command, CancellationToken cancellationToken);
+    Task<TResponse> Handle(TCommand command, CancellationToken cancellationToken);
 }

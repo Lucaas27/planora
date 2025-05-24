@@ -1,14 +1,14 @@
-using planora.Application.Common.Mediator;
-using planora.Application.Common.Responses;
+using planora.Application.Common;
+using planora.Application.Interfaces.Mediator;
 using planora.Domain.Entities;
 using planora.Domain.Repositories;
 
 namespace planora.Application.Features.Activities.Queries.GetAll;
 
 public sealed class GetAllActivitiesHandler(IRepository<Activity> repository)
-    : IQueryHandler<GetAllActivitiesRequest, IEnumerable<GetAllActivitiesResponse>>
+    : IQueryHandler<GetAllActivitiesRequest, Result<IEnumerable<GetAllActivitiesResponse>>>
 {
-    public async Task<BaseResponse<IEnumerable<GetAllActivitiesResponse>>> Handle(
+    public async Task<Result<IEnumerable<GetAllActivitiesResponse>>> Handle(
         GetAllActivitiesRequest request,
         CancellationToken cancellationToken
     )
@@ -17,13 +17,10 @@ public sealed class GetAllActivitiesHandler(IRepository<Activity> repository)
 
         var response = activities.Select(activity => new GetAllActivitiesResponse
         {
+            // Map properties temporarily
             Id = activity.Id
-            // Map other properties as needed
         });
 
-        return BaseResponse<IEnumerable<GetAllActivitiesResponse>>.CreateSuccess(
-            response,
-            "Activities retrieved successfully"
-        );
+        return Result.Success(response);
     }
 }

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using planora.Domain.Common;
 using planora.Domain.Entities;
 
 namespace planora.Infrastructure.Persistence.Context;
