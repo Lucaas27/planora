@@ -1,6 +1,7 @@
 using planora.API.Extensions;
 using planora.Application.Extensions;
 using planora.Infrastructure.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
@@ -11,10 +12,15 @@ services.AddInfrastructureServices(config);
 services.AddApplicationServices();
 services.AddPresentationServices();
 
+//Set up serilog
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.SetUpCors();
+app.SetUpCors(config);
+app.UseSerilogRequestLogging();
 app.MapControllers();
 app.SetUpSwagger();
 

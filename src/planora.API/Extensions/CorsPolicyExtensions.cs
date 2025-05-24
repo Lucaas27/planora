@@ -2,11 +2,15 @@ namespace planora.API.Extensions;
 
 public static class CorsPolicyExtensions
 {
-    public static void SetUpCors(this WebApplication app)
+    public static void SetUpCors(this WebApplication app, IConfiguration config)
     {
-        app.UseCors(x => x
-            .WithOrigins("http://localhost:3000", "https://localhost:3000")
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+        app.UseCors(x =>
+        {
+            var allowedOrigins = config.GetRequiredSection("Cors:allowedOrigins").Value;
+            x
+                .WithOrigins(allowedOrigins?.Split(',', StringSplitOptions.RemoveEmptyEntries) ?? [])
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
     }
 }
