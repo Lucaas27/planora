@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using planora.Domain.Repositories;
-using planora.Infrastructure.Persistence.Context;
 using planora.Infrastructure.Persistence.Seeder;
 using planora.Infrastructure.Repositories;
 
@@ -20,12 +18,7 @@ public static class ServiceCollectionExtensions
     /// <param name="config">The <see cref="IConfiguration" /> instance used to retrieve configuration settings.</param>
     public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddDbContext<AppDbContext>(opt =>
-        {
-            var connectionString = config.GetConnectionString("DefaultConnection");
-            opt.UseSqlite(connectionString);
-        });
-
+        services.ConfigureDbConnection(config);
         services.AddScoped<IDbSeeder, DbSeeder>();
         // Register repositories
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
