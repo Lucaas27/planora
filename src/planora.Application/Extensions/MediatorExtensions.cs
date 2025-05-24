@@ -1,7 +1,6 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using planora.Application.Common;
-using planora.Application.Interfaces;
 using planora.Application.Interfaces.Mediator;
 
 namespace planora.Application.Extensions;

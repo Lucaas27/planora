@@ -6,8 +6,8 @@ using planora.Infrastructure.Persistence.Configuration.Common;
 namespace planora.Infrastructure.Persistence.Configuration;
 
 /// <summary>
-/// Configuration class for the <see cref="Activity"/> entity.
-/// Inherits common configuration from <see cref="BaseEntityTypeConfiguration{TEntity}"/>.
+///     Configuration class for the <see cref="Activity" /> entity.
+///     Inherits common configuration from <see cref="BaseEntityTypeConfiguration{TEntity}" />.
 /// </summary>
 internal class ActivitiesConfig : BaseEntityTypeConfiguration<Activity>
 {
