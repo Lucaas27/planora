@@ -15,11 +15,7 @@ public sealed class GetAllActivitiesHandler(IRepository<Activity> repository)
     {
         var activities = await repository.GetAllAsync(cancellationToken);
 
-        var response = activities.Select(activity => new GetAllActivitiesResponse
-        {
-            // Map properties temporarily
-            Id = activity.Id
-        });
+        var response = activities.Select(activity => activity.MapToDto());
 
         return Result.Success(response);
     }

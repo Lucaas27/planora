@@ -2,15 +2,15 @@ namespace planora.Domain.Entities;
 
 public class Activity : BaseEntity
 {
-    public required string Name { get; set; }
-    public required string Description { get; set; }
-    public DateTimeOffset Date { get; set; }
-    public required string Category { get; set; }
-    public bool IsActive { get; set; }
+    public required string Name { get; init; }
+    public required string Description { get; init; }
+    public DateTimeOffset Date { get; init; }
+    public required string Category { get; init; }
+    public bool IsActive { get; init; }
 
     // Location
-    public required string City { get; set; }
-    public required string Location { get; set; }
-    public double Latitude { get; set; }
-    public double Longitude { get; set; }
+    public required string City { get; init; }
+    public required string Location { get; init; }
+    public double Latitude { get; init; }
+    public double Longitude { get; init; }
 }
