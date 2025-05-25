@@ -15,7 +15,7 @@ public sealed class GetAllActivitiesHandler(IRepository<Activity> repository)
     {
         var activities = await repository.GetAllAsync(cancellationToken);
 
-        var response = activities.Select(activity => activity.MapToDto());
+        var response = activities.Select(activity => activity.MapToGetAllResponse());
 
         return Result.Success(response);
     }

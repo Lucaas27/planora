@@ -9,6 +9,4 @@ public sealed record GetAllActivitiesResponse
     public required string Category { get; init; }
     public bool IsActive { get; init; }
     public required string City { get; init; }
-    public required string Location { get; init; }
-    public string? Coordinates { get; init; }
 }
