@@ -1,54 +1,65 @@
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 using planora.Domain.Errors;
 
 namespace planora.Application.Common;
 
-public class Result<T>
+public class Result
 {
-    private Result(T data)
+    protected Result(bool isSuccess, Error? error)
     {
-        Error = null;
-        Data = data;
-    }
+        if ((isSuccess && error is not null) ||
+            (!isSuccess && error is null))
+        {
+            throw new ArgumentException("Invalid error", nameof(error));
+        }
 
-    private Result(BaseError error)
-    {
+        IsSuccess = isSuccess;
         Error = error;
-        Data = default;
     }
 
-    public bool IsSuccess => Error == null;
-    public BaseError? Error { get; }
-    public T? Data { get; }
+    public bool IsSuccess { get; }
+    public Error? Error { get; }
 
-    public static Result<T> Success(T data)
+    public static Result Success()
     {
-        return new Result<T>(data);
+        return new Result(true, null);
     }
 
-    public static Result<T> Failure(BaseError error)
+    public static Result<TValue> Success<TValue>(TValue value)
     {
-        return new Result<T>(error);
+        return new Result<TValue>(value, true, null);
     }
 
-    public TResult Map<TResult>(Func<T, TResult> onSuccess, Func<BaseError, TResult> onFailure)
+
+    public static Result Failure(Error error)
     {
-        return IsSuccess
-            ? onSuccess(Data!)
-            : onFailure(Error!);
+        return new Result(false, error);
+    }
+
+    public static Result<TValue> Failure<TValue>(Error error)
+    {
+        return new Result<TValue>(default, false, error);
     }
 }
 
-public static class Result
+public class Result<TValue>(TValue? data, bool isSuccess, Error? error) : Result(isSuccess, error)
 {
-    public static Result<T> Success<T>(T data)
+    public TValue Data => IsSuccess
+        ? data!
+        : throw new InvalidOperationException("Cannot access the data of a failed result");
+
+
+    // Implicit conversion from TValue to Result<TValue> (success)
+    public static implicit operator Result<TValue>(TValue value)
     {
-        return Result<T>.Success(data);
+        return Success(value);
     }
 
-    public static Result<T> Failure<T>(BaseError error)
+    // Implicit conversion from Error to Result<TValue> (failure)
+    public static implicit operator Result<TValue>(Error error)
     {
-        return Result<T>.Failure(error);
+        return Failure<TValue>(error);
     }
 }
