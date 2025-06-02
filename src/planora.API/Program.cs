@@ -24,7 +24,7 @@ app.UseExceptionHandler();
 app.SetUpCors(config);
 app.UseSerilogRequestLogging();
 app.MapControllers();
-app.SetUpSwagger();
+app.SetUpScalar();
 
 // Configure database (migrations and seeding) before running the application
 await app.ApplyMigrationsAsync();
