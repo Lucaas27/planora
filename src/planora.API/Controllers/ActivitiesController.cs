@@ -3,12 +3,11 @@ using planora.API.Common;
 using planora.API.Extensions;
 using planora.Application.Features.Activities.Queries.GetAll;
 using planora.Application.Features.Activities.Queries.GetDetails;
-using planora.Application.Interfaces.Mediator;
 
 namespace planora.API.Controllers;
 
-public class ActivitiesController(IMediator mediator)
-    : ApiController(mediator)
+public class ActivitiesController
+    : ApiController
 {
     [HttpGet]
     public async Task<IActionResult> GetAllActivities(CancellationToken cancellationToken)
