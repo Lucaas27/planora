@@ -17,11 +17,6 @@ public record Error
     [JsonIgnore]
     public ErrorType Type { get; }
 
-    public static Error Failure(string code, string description)
-    {
-        return new Error(code, description, ErrorType.Failure);
-    }
-
     public static Error Unexpected(string code, string description)
     {
         return new Error(code, description, ErrorType.Unexpected);

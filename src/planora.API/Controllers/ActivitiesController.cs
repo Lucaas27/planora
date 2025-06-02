@@ -13,9 +13,9 @@ public class ActivitiesController(IMediator mediator)
     [HttpGet]
     public async Task<IActionResult> GetAllActivities(CancellationToken cancellationToken)
     {
-        var response = await Mediator.Query(new GetAllActivitiesRequest(), cancellationToken);
+        var result = await Mediator.Query(new GetAllActivitiesRequest(), cancellationToken);
 
-        return Ok(response);
+        return result.MapToActionResult();
     }
 
     [HttpGet("{id:guid}")]
