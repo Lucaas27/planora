@@ -12,6 +12,7 @@ services.AddInfrastructureServices(config);
 services.AddApplicationServices();
 services.AddPresentationServices();
 
+
 //Set up serilog
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
@@ -19,6 +20,7 @@ builder.Host.UseSerilog((context, configuration) =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseExceptionHandler();
 app.SetUpCors(config);
 app.UseSerilogRequestLogging();
 app.MapControllers();

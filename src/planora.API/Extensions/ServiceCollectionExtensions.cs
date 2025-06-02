@@ -1,3 +1,5 @@
+using planora.API.Middleware;
+
 namespace planora.API.Extensions;
 
 /// <summary>
@@ -14,5 +16,9 @@ public static class ServiceCollectionExtensions
         services.AddControllers();
         services.AddOpenApi();
         services.AddCors();
+
+        // Add global exception handler
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
     }
 }
