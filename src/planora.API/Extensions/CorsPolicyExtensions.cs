@@ -1,8 +1,8 @@
 namespace planora.API.Extensions;
 
-public static class CorsPolicyExtensions
+static internal class CorsPolicyExtensions
 {
-    public static void SetUpCors(this WebApplication app, IConfiguration config)
+    static internal void SetUpCors(this WebApplication app, IConfiguration config)
     {
         app.UseCors(x =>
         {

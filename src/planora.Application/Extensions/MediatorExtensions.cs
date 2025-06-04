@@ -5,9 +5,9 @@ using planora.Application.Interfaces.Mediator;
 
 namespace planora.Application.Extensions;
 
-public static class MediatorExtensions
+static internal class MediatorExtensions
 {
-    public static void AddCustomMediator(this IServiceCollection services, Assembly assembly)
+    static internal void AddCustomMediator(this IServiceCollection services, Assembly assembly)
     {
         // Register mediator
         services.AddScoped<IMediator, Mediator>();
