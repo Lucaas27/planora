@@ -38,17 +38,32 @@ public class Result
         return new Result(false, appError);
     }
 
-    public static Result<TValue> Failure<TValue>(AppError appError)
+    protected static Result<TValue> Failure<TValue>(AppError appError)
     {
         return new Result<TValue>(default, false, appError);
+    }
+
+    // Implicit conversion from AppError to Result (failure)
+    public static implicit operator Result(AppError appError)
+    {
+        return Failure(appError);
     }
 }
 
 public class Result<TValue>(TValue? data, bool isSuccess, AppError? error) : Result(isSuccess, error)
 {
-    public TValue Data => IsSuccess
-        ? data!
-        : throw new InvalidOperationException("Cannot access the data of a failed result");
+    public TValue Data
+    {
+        get
+        {
+            if (!IsSuccess)
+            {
+                throw new InvalidOperationException("Cannot access the data of a failed result");
+            }
+
+            return data!;
+        }
+    }
 
 
     // Implicit conversion from TValue to Result<TValue> (success)
