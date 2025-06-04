@@ -20,21 +20,35 @@ static internal class ResultExtensions
         };
     }
 
-    static internal ObjectResult MapToActionResult<TValue>(this Result<TValue> result)
-    {
-        return result.IsSuccess ? new OkObjectResult(result) : result.ToProblemDetails();
-    }
 
-    static internal ObjectResult MapToActionResult<TValue>(this Result<TValue> result, int statusCode)
+    static internal IActionResult MapToActionResult<TValue>(
+        this Result<TValue> result,
+        int statusCode = StatusCodes.Status200OK
+    )
     {
         if (!result.IsSuccess)
         {
             return result.ToProblemDetails();
         }
 
-        return new ObjectResult(result)
+        return statusCode switch
         {
-            StatusCode = statusCode
+            StatusCodes.Status200OK => new OkObjectResult(result),
+            _ => new ObjectResult(result) { StatusCode = statusCode }
+        };
+    }
+
+    static internal IActionResult MapToActionResult(this Result result, int statusCode)
+    {
+        if (!result.IsSuccess)
+        {
+            return result.ToProblemDetails();
+        }
+
+        return statusCode switch
+        {
+            StatusCodes.Status204NoContent => new NoContentResult(),
+            _ => new ObjectResult(result) { StatusCode = statusCode }
         };
     }
 }
