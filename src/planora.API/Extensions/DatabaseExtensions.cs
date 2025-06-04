@@ -7,14 +7,14 @@ namespace planora.API.Extensions;
 /// <summary>
 ///     Provides extension methods for database configuration and management.
 /// </summary>
-public static class DatabaseExtensions
+static internal class DatabaseExtensions
 {
     /// <summary>
     ///     Applies database migrations for all environments.
     /// </summary>
     /// <param name="app">The <see cref="WebApplication" /> instance.</param>
     /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-    public static async Task ApplyMigrationsAsync(this WebApplication app)
+    static internal async Task ApplyMigrationsAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
@@ -36,7 +36,7 @@ public static class DatabaseExtensions
     /// </summary>
     /// <param name="app">The <see cref="WebApplication" /> instance.</param>
     /// <returns>A <see cref="Task" /> representing the asynchronous operation.</returns>
-    public static async Task SeedDevelopmentDataAsync(this WebApplication app)
+    static internal async Task SeedDevelopmentDataAsync(this WebApplication app)
     {
         if (!app.Environment.IsDevelopment())
         {

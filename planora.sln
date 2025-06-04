@@ -10,6 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4A2BDB28-08FC-47E5-8C0A-E4126138FDE5}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6003EE13-0C0D-45E2-AF35-B58A60F44D46}"

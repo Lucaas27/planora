@@ -9,7 +9,7 @@ namespace planora.Infrastructure.Persistence.Configuration;
 ///     Configuration class for the <see cref="Activity" /> entity.
 ///     Inherits common configuration from <see cref="BaseEntityTypeConfiguration{TEntity}" />.
 /// </summary>
-internal class ActivitiesConfig : BaseEntityTypeConfiguration<Activity>
+sealed internal class ActivitiesConfig : BaseEntityTypeConfiguration<Activity>
 {
     public override void Configure(EntityTypeBuilder<Activity> builder)
     {

@@ -4,9 +4,9 @@ using planora.Infrastructure.Persistence.Context;
 
 namespace planora.Infrastructure.Persistence.Seeder;
 
-internal class DbSeeder(AppDbContext context) : IDbSeeder
+sealed internal class DbSeeder(AppDbContext context) : IDbSeeder
 {
-    private static readonly string ActivityDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+    private static readonly string s_activityDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
         "Persistence", "Seeder", "activityData.json");
 
     private readonly AppDbContext _context = context ?? throw new ArgumentNullException(nameof(context));
@@ -19,7 +19,7 @@ internal class DbSeeder(AppDbContext context) : IDbSeeder
             return;
         }
 
-        var activities = await GetSeedDataAsync<Activity>(ActivityDataPath);
+        var activities = await GetSeedDataAsync<Activity>(s_activityDataPath);
         await _context.Activities.AddRangeAsync(activities);
         await _context.SaveChangesAsync();
     }

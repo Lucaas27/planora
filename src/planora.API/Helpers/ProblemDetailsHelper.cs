@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using planora.Domain.Errors;
 
-namespace planora.API.Common;
+namespace planora.API.Helpers;
 
-public static class ProblemDetailsHelper
+static internal class ProblemDetailsHelper
 {
-    public static int GetStatusCode(ErrorType errorType)
+    static internal int GetStatusCode(ErrorType errorType)
     {
         return errorType switch
         {
@@ -18,7 +18,7 @@ public static class ProblemDetailsHelper
         };
     }
 
-    public static string GetErrorTypeUrl(ErrorType errorType)
+    private static string GetErrorTypeUrl(ErrorType errorType)
     {
         return errorType switch
         {
@@ -31,30 +31,32 @@ public static class ProblemDetailsHelper
         };
     }
 
-    public static ProblemDetails CreateProblemDetails(Error error)
+    // Used in the result pattern
+    static internal ProblemDetails CreateProblemDetails(AppError appError)
     {
         return new ProblemDetails
         {
-            Title = error.Type.ToString(),
-            Type = GetErrorTypeUrl(error.Type),
-            Status = GetStatusCode(error.Type),
+            Title = appError.Type.ToString(),
+            Type = GetErrorTypeUrl(appError.Type),
+            Status = GetStatusCode(appError.Type),
             Extensions = new Dictionary<string, object?>
             {
-                { "errors", new[] { error } }
+                { "errors", new[] { appError } }
             }
         };
     }
 
-    public static ProblemDetailsContext CreateProblemDetailsContext(
+    // Used in the global exception handler to return a problem detail for unhandled errors
+    static internal ProblemDetailsContext CreateProblemDetailsContext(
         HttpContext httpContext,
-        Error error,
+        AppError appError,
         Exception? exception = null
     )
     {
         return new ProblemDetailsContext
         {
             HttpContext = httpContext,
-            ProblemDetails = CreateProblemDetails(error),
+            ProblemDetails = CreateProblemDetails(appError),
             Exception = exception
         };
     }

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics;
-using planora.API.Common;
+using planora.API.Helpers;
 using planora.Domain.Errors;
 
 namespace planora.API.Middleware;
@@ -19,7 +19,7 @@ public class GlobalExceptionHandler(
     {
         logger.LogError(exception, "An unhandled exception occurred: {ExceptionMessage}", exception.Message);
 
-        var error = Error.Unexpected(
+        var error = AppError.Unexpected(
             "server.error",
             env.IsDevelopment()
                 ? $"An unexpected error occurred: {exception.Message}"

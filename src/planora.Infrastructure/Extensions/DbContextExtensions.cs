@@ -5,9 +5,9 @@ using planora.Infrastructure.Persistence.Context;
 
 namespace planora.Infrastructure.Extensions;
 
-public static class DbContextExtensions
+static internal class DbContextExtensions
 {
-    public static void ConfigureDbConnection(this IServiceCollection services, IConfiguration config)
+    static internal void ConfigureDbConnection(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<AppDbContext>(opt =>
         {

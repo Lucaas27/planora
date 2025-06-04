@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using planora.API.Common;
+using planora.API.Helpers;
 using planora.Application.Common;
 
 namespace planora.API.Extensions;
 
-public static class ResultExtensions
+static internal class ResultExtensions
 {
-    private static IActionResult ToProblemDetails(this Result result)
+    private static ObjectResult ToProblemDetails(this Result result)
     {
         if (result.IsSuccess)
         {
@@ -20,7 +20,7 @@ public static class ResultExtensions
         };
     }
 
-    public static IActionResult MapToActionResult<TValue>(this Result<TValue> result)
+    static internal ObjectResult MapToActionResult<TValue>(this Result<TValue> result)
     {
         return result.IsSuccess ? new OkObjectResult(result) : result.ToProblemDetails();
     }

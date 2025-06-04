@@ -7,7 +7,7 @@ namespace planora.Application.Common;
 
 public class Result
 {
-    protected Result(bool isSuccess, Error? error)
+    protected Result(bool isSuccess, AppError? error)
     {
         if ((isSuccess && error is not null) ||
             (!isSuccess && error is null))
@@ -20,7 +20,7 @@ public class Result
     }
 
     public bool IsSuccess { get; }
-    public Error? Error { get; }
+    public AppError? Error { get; }
 
     public static Result Success()
     {
@@ -33,18 +33,18 @@ public class Result
     }
 
 
-    public static Result Failure(Error error)
+    public static Result Failure(AppError appError)
     {
-        return new Result(false, error);
+        return new Result(false, appError);
     }
 
-    public static Result<TValue> Failure<TValue>(Error error)
+    public static Result<TValue> Failure<TValue>(AppError appError)
     {
-        return new Result<TValue>(default, false, error);
+        return new Result<TValue>(default, false, appError);
     }
 }
 
-public class Result<TValue>(TValue? data, bool isSuccess, Error? error) : Result(isSuccess, error)
+public class Result<TValue>(TValue? data, bool isSuccess, AppError? error) : Result(isSuccess, error)
 {
     public TValue Data => IsSuccess
         ? data!
@@ -57,9 +57,9 @@ public class Result<TValue>(TValue? data, bool isSuccess, Error? error) : Result
         return Success(value);
     }
 
-    // Implicit conversion from Error to Result<TValue> (failure)
-    public static implicit operator Result<TValue>(Error error)
+    // Implicit conversion from AppError to Result<TValue> (failure)
+    public static implicit operator Result<TValue>(AppError appError)
     {
-        return Failure<TValue>(error);
+        return Failure<TValue>(appError);
     }
 }
