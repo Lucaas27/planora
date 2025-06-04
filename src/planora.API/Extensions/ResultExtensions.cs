@@ -24,4 +24,17 @@ static internal class ResultExtensions
     {
         return result.IsSuccess ? new OkObjectResult(result) : result.ToProblemDetails();
     }
+
+    static internal ObjectResult MapToActionResult<TValue>(this Result<TValue> result, int statusCode)
+    {
+        if (!result.IsSuccess)
+        {
+            return result.ToProblemDetails();
+        }
+
+        return new ObjectResult(result)
+        {
+            StatusCode = statusCode
+        };
+    }
 }
