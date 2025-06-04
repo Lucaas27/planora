@@ -29,13 +29,13 @@ public class Repository<T>(AppDbContext context) : IRepository<T> where T : clas
 
     public async Task AddAsync(T entity, CancellationToken cancellationToken)
     {
-        await _dbSet.AddAsync(entity, cancellationToken);
+        _dbSet.Add(entity);
         await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
     {
-        await _dbSet.AddRangeAsync(entities, cancellationToken);
+        _dbSet.AddRange(entities);
         await context.SaveChangesAsync(cancellationToken);
     }
 
