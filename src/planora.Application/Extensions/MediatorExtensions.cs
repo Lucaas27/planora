@@ -79,6 +79,6 @@ static internal class MediatorExtensions
         }
 
         var typeDefinition = type.GetGenericTypeDefinition();
-        return typeDefinition == typeof(ICommandHandler<>);
+        return typeDefinition == typeof(ICommandHandler<>) || typeDefinition == typeof(ICommandHandler<,>);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using planora.API.Common;
 using planora.API.Extensions;
 using planora.Application.Common;
+using planora.Application.Features.Activities.Commands.Create;
 using planora.Application.Features.Activities.Queries.GetAll;
 using planora.Application.Features.Activities.Queries.GetDetails;
 
@@ -33,6 +34,16 @@ public class ActivitiesController
     )
     {
         var result = await Mediator.Query(new GetActivityDetailsRequest(id), cancellationToken);
+
+        return result.MapToActionResult();
+    }
+
+    [HttpPost]
+    [ProducesResponseType(typeof(Result<CreateActivityResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> CreateActivity(CreateActivityRequest request, CancellationToken cancellationToken)
+    {
+        var result = await Mediator.Command(request, cancellationToken);
 
         return result.MapToActionResult();
     }
