@@ -7,6 +7,7 @@ namespace planora.Application.Tests.Common;
 
 public class MediatorTests
 {
+    private const string ExpectedResponse = "ExpectedResponse";
     [Fact]
     public async Task Query_ReturnsExpectedResponse_WhenHandlerIsRegistered()
     {
@@ -14,8 +15,8 @@ public class MediatorTests
         var serviceProvider = Substitute.For<IServiceProvider>();
         var query = Substitute.For<IQuery<string>>();
         var handler = Substitute.For<IQueryHandler<IQuery<string>, string>>();
-
-        handler.Handle(query, Arg.Any<CancellationToken>()).Returns("ExpectedResponse");
+        handler.Handle(query, Arg.Any<CancellationToken>()).Returns(ExpectedResponse);
+        handler.Handle(query, Arg.Any<CancellationToken>()).Returns(ExpectedResponse);
         serviceProvider.GetService(Arg.Any<Type>()).Returns(handler);
 
         var mediator = new Mediator(serviceProvider);
@@ -23,8 +24,8 @@ public class MediatorTests
         // Act
         var result = await mediator.Query(query, CancellationToken.None);
 
-        // Assert
-        result.ShouldBe("ExpectedResponse");
+        result.ShouldBe(ExpectedResponse);
+        result.ShouldBe(ExpectedResponse);
     }
 
     [Fact]
@@ -84,8 +85,8 @@ public class MediatorTests
         var serviceProvider = Substitute.For<IServiceProvider>();
         var command = Substitute.For<ICommand<string>>();
         var handler = Substitute.For<ICommandHandler<ICommand<string>, string>>();
-
-        handler.Handle(command, Arg.Any<CancellationToken>()).Returns("ExpectedResponse");
+        handler.Handle(command, Arg.Any<CancellationToken>()).Returns(ExpectedResponse);
+        handler.Handle(command, Arg.Any<CancellationToken>()).Returns(ExpectedResponse);
         serviceProvider.GetService(Arg.Any<Type>()).Returns(handler);
 
         var mediator = new Mediator(serviceProvider);
@@ -94,7 +95,7 @@ public class MediatorTests
         var result = await mediator.Command(command, CancellationToken.None);
 
         // Assert
-        result.ShouldBe("ExpectedResponse");
+        result.ShouldBe(ExpectedResponse);
     }
 
     [Fact]
