@@ -8,6 +8,7 @@ namespace planora.Application.Tests.Common;
 public class MediatorTests
 {
     private const string ExpectedResponse = "ExpectedResponse";
+
     [Fact]
     public async Task Query_ReturnsExpectedResponse_WhenHandlerIsRegistered()
     {

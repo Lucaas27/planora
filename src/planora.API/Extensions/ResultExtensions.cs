@@ -14,10 +14,7 @@ static internal class ResultExtensions
         }
 
         var problemDetails = ProblemDetailsHelper.CreateProblemDetails(result.Error!);
-        return new ObjectResult(problemDetails)
-        {
-            StatusCode = problemDetails.Status
-        };
+        return new ObjectResult(problemDetails) { StatusCode = problemDetails.Status };
     }
 
 
