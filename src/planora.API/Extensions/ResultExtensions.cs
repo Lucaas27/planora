@@ -45,10 +45,6 @@ static internal class ResultExtensions
             return result.ToProblemDetails();
         }
 
-        return statusCode switch
-        {
-            StatusCodes.Status204NoContent => new NoContentResult(),
-            _ => new ObjectResult(result) { StatusCode = statusCode }
-        };
+        return new StatusCodeResult(statusCode);
     }
 }
