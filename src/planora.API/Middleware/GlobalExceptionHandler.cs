@@ -22,7 +22,7 @@ public class GlobalExceptionHandler(
         var error = AppError.Unexpected(
             "server.error",
             env.IsDevelopment()
-                ? $"An unexpected error occurred: {exception.Message}"
+                ? $"{exception.Message}"
                 : "An unexpected error occurred. Please try again later.");
 
         // Get the appropriate status code (will be 500 for unexpected errors)
