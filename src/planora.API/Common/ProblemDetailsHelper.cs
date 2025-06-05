@@ -5,7 +5,7 @@ namespace planora.API.Common;
 
 static internal class ProblemDetailsHelper
 {
-    static internal int GetStatusCode(ErrorType errorType)
+    private static int GetStatusCode(ErrorType errorType)
     {
         return errorType switch
         {
@@ -50,6 +50,7 @@ static internal class ProblemDetailsHelper
         Exception? exception = null
     )
     {
+        httpContext.Response.StatusCode = GetStatusCode(appError.Type);
         return new ProblemDetailsContext
         {
             HttpContext = httpContext, ProblemDetails = CreateProblemDetails(appError), Exception = exception

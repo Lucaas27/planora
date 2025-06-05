@@ -25,12 +25,6 @@ public class GlobalExceptionHandler(
                 ? $"{exception.Message}"
                 : "An unexpected error occurred. Please try again later.");
 
-        // Get the appropriate status code (will be 500 for unexpected errors)
-        var statusCode = ProblemDetailsHelper.GetStatusCode(error.Type);
-
-        // Explicitly set the status code on the response
-        httpContext.Response.StatusCode = statusCode;
-
         var problemDetailsContext = ProblemDetailsHelper.CreateProblemDetailsContext(
             httpContext,
             error,
