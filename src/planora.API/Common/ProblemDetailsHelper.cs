@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using planora.Domain.Errors;
 
-namespace planora.API.Helpers;
+namespace planora.API.Common;
 
 static internal class ProblemDetailsHelper
 {
