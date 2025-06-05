@@ -6,22 +6,16 @@ public static class UpdateActivityMapper
 {
     public static Activity MapToUpdatedEntity(this Activity existingActivity, UpdateActivityRequest request)
     {
-        var updatedActivity = new Activity
-        {
-            Id = existingActivity.Id,
-            Name = request.Name ?? existingActivity.Name,
-            Description = request.Description ?? existingActivity.Description,
-            Date = request.Date ?? existingActivity.Date,
-            Category = request.Category ?? existingActivity.Category,
-            IsActive = request.IsActive ?? existingActivity.IsActive,
+        existingActivity.Name = request.Name ?? existingActivity.Name;
+        existingActivity.Description = request.Description ?? existingActivity.Description;
+        existingActivity.Date = request.Date ?? existingActivity.Date;
+        existingActivity.Category = request.Category ?? existingActivity.Category;
+        existingActivity.IsActive = request.IsActive ?? existingActivity.IsActive;
+        existingActivity.City = request.City ?? existingActivity.City;
+        existingActivity.Location = request.Location ?? existingActivity.Location;
+        existingActivity.Latitude = request.Latitude ?? existingActivity.Latitude;
+        existingActivity.Longitude = request.Longitude ?? existingActivity.Longitude;
 
-            // Location properties
-            City = request.City ?? existingActivity.City,
-            Location = request.Location ?? existingActivity.Location,
-            Latitude = request.Latitude ?? existingActivity.Latitude,
-            Longitude = request.Longitude ?? existingActivity.Longitude
-        };
-
-        return updatedActivity;
+        return existingActivity;
     }
 }

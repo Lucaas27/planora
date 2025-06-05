@@ -41,27 +41,6 @@ public class Repository<T>(AppDbContext context) : IRepository<T> where T : clas
 
     public async Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
-        // Get the primary key value of the entity
-        var entityType = context.Model.FindEntityType(typeof(T));
-        var primaryKey = entityType?.FindPrimaryKey();
-
-        if (primaryKey != null)
-        {
-            // Get the primary key value from the entity
-            var keyProperty = primaryKey.Properties[0];
-            var keyValue = keyProperty.GetGetter().GetClrValue(entity);
-
-            // Try to find the entity that's being tracked
-            var tracked = await _dbSet.FindAsync([keyValue], cancellationToken);
-
-            if (tracked != null)
-            {
-                // Detach the tracked entity to avoid conflicts
-                context.Entry(tracked).State = EntityState.Detached;
-            }
-        }
-
-        // Update the entity without tracking conflicts
         _dbSet.Update(entity);
         await context.SaveChangesAsync(cancellationToken);
     }
