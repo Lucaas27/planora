@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics;
-using planora.API.Helpers;
+using planora.API.Common;
 using planora.Domain.Errors;
 
 namespace planora.API.Middleware;
