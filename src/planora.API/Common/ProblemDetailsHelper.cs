@@ -39,10 +39,7 @@ static internal class ProblemDetailsHelper
             Title = appError.Type.ToString(),
             Type = GetErrorTypeUrl(appError.Type),
             Status = GetStatusCode(appError.Type),
-            Extensions = new Dictionary<string, object?>
-            {
-                { "errors", new[] { appError } }
-            }
+            Extensions = new Dictionary<string, object?> { { "errors", new[] { appError } } }
         };
     }
 
@@ -55,9 +52,7 @@ static internal class ProblemDetailsHelper
     {
         return new ProblemDetailsContext
         {
-            HttpContext = httpContext,
-            ProblemDetails = CreateProblemDetails(appError),
-            Exception = exception
+            HttpContext = httpContext, ProblemDetails = CreateProblemDetails(appError), Exception = exception
         };
     }
 }

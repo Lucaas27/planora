@@ -1,15 +1,15 @@
 <Project>
-    <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AnalysisLevel>latest</AnalysisLevel>
-        <AnalysisMode>Recommended</AnalysisMode>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
-        <NoWarn>$(NoWarn);CA1848</NoWarn>
-        <NoWarn>$(NoWarn);CA1707</NoWarn>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);CA1848</NoWarn>
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
 </Project>

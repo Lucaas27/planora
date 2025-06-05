@@ -1,4 +1,3 @@
-
 namespace planora.API.Extensions;
 
 /// <summary>
