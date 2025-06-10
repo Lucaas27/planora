@@ -1,0 +1,199 @@
+name: .NET CI/CD
+
+# Prevent concurrent deployments
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false # Don't cancel in-progress runs as we want to allow deployments to complete
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  DOTNET_VERSION: "9.x"
+  DOCKER_IMAGE_NAME: planora-api
+  DOCKER_REGISTRY: ghcr.io/${{ github.repository_owner }}
+
+jobs:
+  build:
+    name: Build & Test
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - name: Restore dependencies
+        run: dotnet restore --locked-mode
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests with coverage
+        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --logger trx --collect:"XPlat Code Coverage"
+
+      - name: Generate coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
+        with:
+          reports: "**/*.cobertura.xml"
+          targetdir: "${{ github.workspace }}/coverage-report"
+          reporttypes: "Cobertura;MarkdownSummaryGithub;Html"
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: "${{ github.workspace }}/coverage-report/Cobertura.xml"
+
+      - name: Create code coverage summary
+        uses: irongut/CodeCoverageSummary@v1.3.0
+        with:
+          filename: "**/**/Cobertura.xml"
+          badge: true
+          fail_below_min: true
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: false
+          indicators: true
+          output: both
+          thresholds: '60 80'
+
+      - name: Add coverage PR comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md
+          header: code-coverage
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ${{ github.workspace }}/**/TestResults/**/*
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@v2.16.1
+        if: always()
+        with:
+          trx_files: "${{ github.workspace }}/**/*.trx"
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: ${{ github.workspace }}/coverage-report
+
+      - name: Deploy coverage to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ github.workspace }}/coverage-report
+          destination_dir: coverage
+          keep_files: true
+  release:
+    name: Semantic Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: success() && (github.ref == 'refs/heads/main')
+    outputs:
+      version: ${{ steps.get_tag.outputs.new_release_version }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Run semantic-release
+        uses: cycjimmy/semantic-release-action@v4
+        id: semantic_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          VERSION=$(git describe --tags --abbrev=0)
+          echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "new_release_version=$VERSION"
+
+      - name: Set summary
+        if: ${{ steps.semantic_release.outputs.new_release_published == 'true' }}
+        run: |
+          echo "## Semantic Release" >> $GITHUB_STEP_SUMMARY
+          echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release
+          .outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+  
+  docker:
+    name: Build and Publish Docker Image
+    needs: [ build, release ]
+    runs-on: ubuntu-latest
+    if: success() && (github.ref == 'refs/heads/main')
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=${{ needs.release.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
+            type=sha,format=short
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./src/planora.API/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Set Docker summary
+        run: |
+          echo "## Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Docker image published successfully" >> $GITHUB_STEP_SUMMARY
+          echo "Tags:" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:sha-$(git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY

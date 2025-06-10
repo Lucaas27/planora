@@ -12,14 +12,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\.dockerignore">
-      <Link>.dockerignore</Link>
-    </Content>
+    <ProjectReference Include="..\planora.Application\planora.Application.csproj"/>
+    <ProjectReference Include="..\planora.Infrastructure\planora.Infrastructure.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\planora.Application\planora.Application.csproj"/>
-    <ProjectReference Include="..\planora.Infrastructure\planora.Infrastructure.csproj"/>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
   </ItemGroup>
 
 </Project>

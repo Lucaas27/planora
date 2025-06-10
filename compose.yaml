@@ -1,6 +1,0 @@
-﻿services:
-  planora.api:
-    image: planora.api
-    build:
-      context: .
-      dockerfile: src/planora.API/Dockerfile

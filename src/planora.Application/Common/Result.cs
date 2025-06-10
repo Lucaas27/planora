@@ -38,7 +38,7 @@ public class Result
         return new Result(false, appError);
     }
 
-    protected static Result<TValue> Failure<TValue>(AppError appError)
+    public static Result<TValue> Failure<TValue>(AppError appError)
     {
         return new Result<TValue>(default, false, appError);
     }
