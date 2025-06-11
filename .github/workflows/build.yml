@@ -138,5 +138,7 @@ jobs:
             ## Docker Image 🐳
             Image has been built for this PR.
             To test it locally, run:
-            docker pull $(echo "${{ env.DOCKER_REGISTRY }}" | tr '[:upper:]' '[:lower:]')/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
+            ```
+            docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker run -p 8080:80 ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
+            ```
