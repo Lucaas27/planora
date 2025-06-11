@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design"/>
-        <PackageReference Include="Serilog.AspNetCore"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI"/>
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design"/>
+    <PackageReference Include="Serilog.AspNetCore"/>
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI"/>
+  </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\planora.Application\planora.Application.csproj"/>
+    <ProjectReference Include="..\planora.Infrastructure\planora.Infrastructure.csproj"/>
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\planora.Application\planora.Application.csproj"/>
-        <ProjectReference Include="..\planora.Infrastructure\planora.Infrastructure.csproj"/>
-    </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
+  </ItemGroup>
 
 </Project>
