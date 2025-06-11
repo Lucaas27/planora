@@ -73,6 +73,7 @@ jobs:
         with:
           recreate: true
           path: code-coverage-results.md
+          header: code-coverage
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
@@ -132,9 +133,10 @@ jobs:
         if: github.event_name == 'pull_request'
         with:
           recreate: true
+          header: docker-image
           message: |
             ## Docker Image 🐳
             Image has been built for this PR.
             To test it locally, run:
-            docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
+            docker pull $(echo "${{ env.DOCKER_REGISTRY }}" | tr '[:upper:]' '[:lower:]')/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker run -p 8080:80 ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
