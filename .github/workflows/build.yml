@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - main
+
 env:
   DOTNET_VERSION: "9.x"
   DOCKER_IMAGE_NAME: planora-api
@@ -19,7 +20,7 @@ jobs:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the code
+      - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -34,32 +35,26 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore --locked-mode
 
-      - name: Build
+      - name: Build solution
         run: dotnet build --configuration Release --no-restore
 
-      - name: Test
+      - name: Run tests with coverage
         run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --logger trx --collect:"XPlat Code Coverage"
 
-      - name: Combine Coverage Reports # This is because one report is produced per project, and we want one result for all of them.
+      - name: Generate coverage report
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
         with:
-          reports: "**/*.cobertura.xml" # REQUIRED # The coverage reports that should be parsed (separated by semicolon). Globbing is supported.
-          targetdir: "${{ github.workspace }}" # REQUIRED # The directory where the generated report should be saved.
-          reporttypes: "Cobertura" # The output formats and scope (separated by semicolon) Values: Badges, Clover, Cobertura, CsvSummary, Html, Html_Dark, Html_Light, Html_BlueRed, HtmlChart, HtmlInline, HtmlInline_AzurePipelines, HtmlInline_AzurePipelines_Dark, HtmlInline_AzurePipelines_Light, HtmlSummary, JsonSummary, Latex, LatexSummary, lcov, MarkdownSummary, MarkdownSummaryGithub, MarkdownDeltaSummary, MHtml, PngChart, SonarQube, TeamCitySummary, TextSummary, TextDeltaSummary, Xml, XmlSummary
-          verbosity: "Info" # The verbosity level of the log messages. Values: Verbose, Info, Warning, Error, Off
-          title: "Code Coverage" # Optional title.
-          tag: "${{ github.run_number }}_${{ github.run_id }}" # Optional tag or build version.
-          customSettings: "" # Optional custom settings (separated by semicolon). See: https://github.com/danielpalme/ReportGenerator/wiki/Settings.
-          toolpath: "reportgeneratortool" # Default directory for installing the dotnet tool.
+          reports: "**/*.cobertura.xml"
+          targetdir: "${{ github.workspace }}"
+          reporttypes: "Cobertura;MarkdownSummaryGithub"
 
-      - name: Upload Combined Coverage XML
+      - name: Upload coverage artifacts
         uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: ${{ github.workspace }}/Cobertura.xml
-          retention-days: 5
 
-      - name: Publish Code Coverage Report
+      - name: Create code coverage summary
         uses: irongut/CodeCoverageSummary@v1.3.0
         with:
           filename: "Cobertura.xml"
@@ -72,90 +67,74 @@ jobs:
           output: both
           thresholds: '60 80'
 
-      - name: Add Coverage PR Comment
+      - name: Add coverage PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
         with:
           recreate: true
           path: code-coverage-results.md
 
-      - name: Upload Test Result Files
+      - name: Upload test results
         uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: ${{ github.workspace }}/**/TestResults/**/*
-          retention-days: 5
 
-      - name: Publish Test Results
+      - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@v2.16.1
         if: always()
         with:
           trx_files: "${{ github.workspace }}/**/*.trx"
-
   docker:
-    name: Build and Push Docker Image
+    name: Build and Publish Docker Image
     needs: build
     runs-on: ubuntu-latest
-    # Only build Docker image for main branch and PRs targeting main branch
     if: success() && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request')
     permissions:
       contents: read
       packages: write
       pull-requests: write
-    
     steps:
-      - name: Check out the code
+      - name: Check out code
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Login to GitHub Container Registry
-        if: github.event_name != 'pull_request'
+      - name: Login to container registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for Docker
+      - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
           tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha,format=long
             type=sha,format=short
-            latest
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./src/planora.API/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-      - name: Add Docker Image PR Comment
+      - name: Add Docker image PR comment
         uses: marocchino/sticky-pull-request-comment@v2
         if: github.event_name == 'pull_request'
         with:
           recreate: true
           message: |
             ## Docker Image 🐳
-            
-            Image has been built for this PR. 
+            Image has been built for this PR.
             To test it locally, run:
-            ```bash
             docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
             docker run -p 8080:80 ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
-            ```
-            
-            The API should be available at http://localhost:8080
