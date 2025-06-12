@@ -14,8 +14,12 @@ dotnet tool install --global dotnet-coverage || dotnet tool update --global dotn
 echo -e "${GREEN}Building the solution in Release mode...${NC}"
 dotnet build --configuration Release
 
+# Clean up previous coverage data but keep the directory
+rm -rf ./coverage/*
+mkdir -p ./coverage/report
+
 echo -e "${GREEN}Running tests with coverage collection...${NC}"
-dotnet-coverage collect --output-format cobertura --output "./coverage/coverage.cobertura.xml" "dotnet test --configuration Release --no-build"
+dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage;Format=json,lcov,cobertura" --results-directory:"./coverage"
 
 # Check if ReportGenerator is installed
 if ! dotnet tool list -g | grep -q "dotnet-reportgenerator-globaltool"; then
@@ -26,10 +30,20 @@ else
 fi
 
 echo -e "${GREEN}Generating coverage report...${NC}"
+COBERTURA_FILE=$(find ./coverage -name "*.cobertura.xml" | head -1)
+
+if [ -z "$COBERTURA_FILE" ]; then
+    echo -e "${YELLOW}No coverage file found. Check test execution.${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}Found coverage file: ${YELLOW}${COBERTURA_FILE}${NC}"
+
+
 reportgenerator \
-    -reports:"./coverage/coverage.cobertura.xml" \
+    -reports:"${COBERTURA_FILE}" \
     -targetdir:"./coverage/report" \
-    -reporttypes:"Html;HtmlSummary;Cobertura;MarkdownSummary;JsonSummary"
+    -reporttypes:"Html;HtmlSummary;MarkdownSummary"
 
 echo -e "${GREEN}Coverage report generated successfully!${NC}"
 echo -e "${YELLOW}Summary:${NC}"
