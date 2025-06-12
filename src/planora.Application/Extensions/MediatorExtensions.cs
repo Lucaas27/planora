@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using planora.Application.Common;
@@ -5,6 +6,7 @@ using planora.Application.Interfaces.Mediator;
 
 namespace planora.Application.Extensions;
 
+[ExcludeFromCodeCoverage]
 static internal class MediatorExtensions
 {
     static internal void AddCustomMediator(this IServiceCollection services, Assembly assembly)
