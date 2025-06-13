@@ -48,11 +48,6 @@ jobs:
           targetdir: "${{ github.workspace }}/coverage-report"
           reporttypes: "Cobertura;MarkdownSummaryGithub;Html"
 
-      - name: List coverage report directory
-        run: |
-          echo "Coverage report directory contents:"
-          ls -la ${{ github.workspace }}/coverage-report
-
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -70,7 +65,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: '60 80'
+          thresholds: "60 80"
 
       - name: Add coverage PR comment
         uses: marocchino/sticky-pull-request-comment@v2
@@ -99,7 +94,6 @@ jobs:
           path: ${{ github.workspace }}/coverage-report
 
       - name: Deploy coverage to GitHub Pages
-        if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
