@@ -130,6 +130,8 @@ jobs:
       - name: Run semantic-release
         uses: cycjimmy/semantic-release-action@v4
         id: semantic_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Get latest tag
         id: get_tag
