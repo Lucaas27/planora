@@ -131,7 +131,7 @@ jobs:
       - name: Run semantic-release
         id: semantic_release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           npx semantic-release
           VERSION=$(npx semantic-release --dry-run | grep -oP '"nextRelease":\{"version":"\K[^"]+' | tail -1)
