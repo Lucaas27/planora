@@ -132,6 +132,10 @@ jobs:
         run: |
           if [ -z "${{ secrets.GH_PAT }}" ]; then echo "GH_PAT is NOT set"; else echo "GH_PAT is set"; fi
 
+      - name: Configure git to use PAT for pushes
+        run: |
+          git config --global url."https://x-access-token:${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+
       - name: Run semantic-release
         id: semantic_release
         env:
