@@ -142,7 +142,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           npx semantic-release
-          VERSION=$(npx semantic-release --dry-run | grep -oP '"nextRelease":\{"version":"\K[^"]+' | tail -1)
+          VERSION=$(git describe --tags --abbrev=0)
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
   docker:
     name: Build and Publish Docker Image
