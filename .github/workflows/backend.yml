@@ -144,7 +144,7 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: |
-          VERSION=$(git describe --tags --abbrev=0)
+          VERSION=$(git describe --tags --abbrev=0 --match "backend-v*" | sed 's/backend-v//')
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "new_release_version=$VERSION"
 
@@ -152,10 +152,8 @@ jobs:
         if: ${{ steps.semantic_release.outputs.new_release_published == 'true' }}
         run: |
           echo "## Semantic Release" >> $GITHUB_STEP_SUMMARY
-          echo "✅ New version published: v${{ steps.semantic_release.outputs.new_release_version }}" >> 
-          $GITHUB_STEP_SUMMARY
-          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release
-          .outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/backend-v${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
   
   docker:
     name: Build and Publish Docker Image

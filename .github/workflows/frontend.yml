@@ -91,7 +91,7 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: |
-          VERSION=$(git describe --tags --abbrev=0)
+          VERSION=$(git describe --tags --abbrev=0 --match "frontend-v*" | sed 's/frontend-v//')
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "new_release_version=$VERSION"
 
@@ -100,8 +100,7 @@ jobs:
         run: |
           echo "## Semantic Release" >> $GITHUB_STEP_SUMMARY
           echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release
-          .outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/frontend-v${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
 
   docker:
     name: Build and Publish Frontend Docker Image
