@@ -125,16 +125,11 @@ jobs:
         with:
           node-version: lts/*
 
-      - name: Install dependencies
-        run: npm install --no-save semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
-
-      - name: Debug GH_PAT presence
+      - name: Configure Git
         run: |
-          if [ -z "${{ secrets.GH_PAT }}" ]; then echo "GH_PAT is NOT set"; else echo "GH_PAT is set"; fi
-
-      - name: Configure git to use PAT for pushes
-        run: |
-          git config --global url."https://x-access-token:${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
 
       - name: Run semantic-release
         uses: cycjimmy/semantic-release-action@v4
@@ -149,8 +144,8 @@ jobs:
             @semantic-release/changelog
             @semantic-release/github
             @semantic-release/commit-analyzer
-            @semantic-release/release-notes-generator
         env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Get latest tag
@@ -159,6 +154,14 @@ jobs:
           VERSION=$(git describe --tags --abbrev=0)
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "new_release_version=$VERSION"
+
+      - name: Set summary
+        if: ${{ steps.semantic_release.outputs.new_release_published == 'true' }}
+        run: |
+          echo "## Semantic Release" >> $GITHUB_STEP_SUMMARY
+          echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+            
   docker:
     name: Build and Publish Docker Image
     needs: [ build, release ]
@@ -199,3 +202,12 @@ jobs:
           file: ./src/planora.API/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
+          
+      - name: Set Docker summary
+        run: |
+          echo "## Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Docker image published successfully" >> $GITHUB_STEP_SUMMARY
+          echo "Tags:" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:sha-$(git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY
