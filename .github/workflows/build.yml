@@ -111,6 +111,7 @@ jobs:
     name: Semantic Release
     needs: build
     runs-on: ubuntu-latest
+    if: success() && (github.ref == 'refs/heads/main')
     outputs:
       version: ${{ steps.semantic_release.outputs.new_release_version }}
     steps:
