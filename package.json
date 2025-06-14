@@ -1,17 +1,6 @@
 {
-  "name": "planora",
+  "name": "planora-backend",
   "version": "0.0.0-development",
-  "description": "Planora API",
-  "private": true,
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      "@semantic-release/github"
-    ]
-  }
+  "description": "Planora API Backend",
+  "private": true
 }
-

@@ -1,0 +1,32 @@
+{
+  "branches": [
+    "main"
+  ],
+  "tagFormat": "v${version}",
+  "plugins": [
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES"
+          ]
+        }
+      }
+    ],
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "writerOpts": {
+          "commitGroupsSort": [
+            "scope",
+            "subject"
+          ],
+          "commitPartial": "* {{header}} | {{#if scope}} **{{scope}}**{{/if}} | {{#if hash}} {{hash}}{{/if}}\n"
+        }
+      }
+    ],
+    "@semantic-release/github"
+  ]
+}

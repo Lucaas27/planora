@@ -1,9 +1,9 @@
-name: .NET CI/CD
+name: CI/CD Pipeline
 
 # Prevent concurrent deployments
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false # Don't cancel in-progress runs as we want to allow deployments to complete
+  cancel-in-progress: false
 
 on:
   workflow_call:
@@ -14,15 +14,12 @@ on:
   pull_request:
     branches:
       - main
-
 env:
   DOTNET_VERSION: "9.x"
-  DOCKER_IMAGE_NAME: planora-api
-  DOCKER_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
-  build:
-    name: Build & Test
+  build-backend:
+    name: Build & Test Backend
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -106,11 +103,51 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ github.workspace }}/coverage-report
-          destination_dir: coverage
+          destination_dir: coverage/backend
           keep_files: true
-  release:
-    name: Semantic Release
-    needs: build
+
+  build-frontend:
+    name: Build & Test Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Lint
+        working-directory: ./client
+        run: npm run lint
+
+      - name: Build
+        working-directory: ./client
+        run: npm run build
+
+      - name: Test
+        working-directory: ./client
+        run: npm run test
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: client/dist/
+
+  release-app:
+    name: Application Release
+    needs: [ build-backend, build-frontend ]
     runs-on: ubuntu-latest
     if: success() && (github.ref == 'refs/heads/main')
     outputs:
@@ -121,6 +158,7 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GH_PAT }}
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -130,33 +168,39 @@ jobs:
       - name: Run semantic-release
         uses: cycjimmy/semantic-release-action@v4
         id: semantic_release
+        with:
+          working_directory: .
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Get latest tag
         id: get_tag
         run: |
-          VERSION=$(git describe --tags --abbrev=0)
+          # Try to get the latest tag, but use 1.0.0 as default if no tags exist yet
+          VERSION=$(git describe --tags --abbrev=0 --match "v*" | sed 's/v//' || echo "1.0.0")
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "new_release_version=$VERSION"
 
       - name: Set summary
         if: ${{ steps.semantic_release.outputs.new_release_published == 'true' }}
         run: |
-          echo "## Semantic Release" >> $GITHUB_STEP_SUMMARY
+          echo "## Application Release" >> $GITHUB_STEP_SUMMARY
           echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release
-          .outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
-  
-  docker:
-    name: Build and Publish Docker Image
-    needs: [ build, release ]
+          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+
+  docker-backend:
+    name: Build and Publish Backend Docker Image
+    needs: release-app
+    if: success() && (github.ref == 'refs/heads/main') && needs.release-app.outputs.version != ''
     runs-on: ubuntu-latest
-    if: success() && (github.ref == 'refs/heads/main')
     permissions:
       contents: read
       packages: write
       pull-requests: write
+    env:
+      DOCKER_IMAGE_NAME: planora-api
+      DOCKER_REGISTRY: ghcr.io/${{ github.repository_owner }}
+      RELEASE_VERSION: ${{ needs.release-app.outputs.version || '1.0.0' }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -178,8 +222,7 @@ jobs:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=${{ needs.release.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
-            type=sha,format=short
+            type=raw,value=${{ env.RELEASE_VERSION }},enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -191,9 +234,61 @@ jobs:
 
       - name: Set Docker summary
         run: |
-          echo "## Docker Image" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Docker image published successfully" >> $GITHUB_STEP_SUMMARY
+          echo "## Backend Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Backend Docker image published successfully" >> $GITHUB_STEP_SUMMARY
           echo "Tags:" >> $GITHUB_STEP_SUMMARY
           echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
-          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:sha-$(git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ env.RELEASE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+
+  docker-frontend:
+    name: Build and Publish Frontend Docker Image
+    needs: release-app
+    if: success() && (github.ref == 'refs/heads/main') && needs.release-app.outputs.version != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      pull-requests: write
+    env:
+      FRONTEND_IMAGE_NAME: planora-frontend
+      DOCKER_REGISTRY: ghcr.io/${{ github.repository_owner }}
+      RELEASE_VERSION: ${{ needs.release-app.outputs.version || '1.0.0' }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=${{ env.RELEASE_VERSION }},enable=${{ github.ref == 'refs/heads/main' }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./client/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+
+      - name: Set Docker summary
+        run: |
+          echo "## Frontend Docker Image" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Frontend Docker image published successfully" >> $GITHUB_STEP_SUMMARY
+          echo "Tags:" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.RELEASE_VERSION }}" >> $GITHUB_STEP_SUMMARY
+

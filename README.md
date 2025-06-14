@@ -1,12 +1,13 @@
 # Planora
 
-[![.NET CI/CD](https://github.com/Lucaas27/planora/actions/workflows/build.yml/badge.svg)](https://github.com/Lucaas27/planora/actions/workflows/build.yml)
+[![Build](https://github.com/Lucaas27/planora/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Lucaas27/planora/actions/workflows/ci-cd.yml)
 [![Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue)](https://lucaas27.github.io/planora/coverage/)
 [![Docker Image](https://img.shields.io/badge/Docker-Latest%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-api)
 
 ## Overview
 
-Planora is a modern event planning application built with .NET 9. It enables users to create, manage, and participate in various activities and events with an intuitive interface and robust backend.
+Planora is a modern event planning application built with .NET 9. It enables users to create, manage, and participate in
+various activities and events with an intuitive interface and robust backend.
 
 ## Features
 
