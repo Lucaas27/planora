@@ -145,7 +145,8 @@ jobs:
         run: |
           echo "## Semantic Release" >> $GITHUB_STEP_SUMMARY
           echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
-          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
+          echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release
+          .outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
   
   docker:
     name: Build and Publish Docker Image
