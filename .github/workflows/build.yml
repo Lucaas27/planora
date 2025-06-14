@@ -1,4 +1,10 @@
 name: .NET CI/CD
+
+# Prevent concurrent deployments
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false # Don't cancel in-progress runs as we want to allow deployments to complete
+
 on:
   workflow_call:
   workflow_dispatch:
@@ -65,7 +71,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: "60 80"
+          thresholds: '60 80'
 
       - name: Add coverage PR comment
         uses: marocchino/sticky-pull-request-comment@v2
@@ -94,17 +100,47 @@ jobs:
           path: ${{ github.workspace }}/coverage-report
 
       - name: Deploy coverage to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ github.workspace }}/coverage-report
           destination_dir: coverage
           keep_files: true
-  docker:
-    name: Build and Publish Docker Image
+  release:
+    name: Semantic Release
     needs: build
     runs-on: ubuntu-latest
-    if: success() && (github.ref == 'refs/heads/main' || github.event_name == 'pull_request')
+    if: success() && (github.ref == 'refs/heads/main')
+    outputs:
+      version: ${{ steps.semantic_release.outputs.new_release_version }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm install --no-save semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
+
+      - name: Run semantic-release
+        id: semantic_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release
+          VERSION=$(npx semantic-release --dry-run | grep -oP '"nextRelease":\{"version":"\K[^"]+' | tail -1)
+          echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
+  docker:
+    name: Build and Publish Docker Image
+    needs: [ build, release ]
+    runs-on: ubuntu-latest
+    if: success() && (github.ref == 'refs/heads/main')
     permissions:
       contents: read
       packages: write
@@ -130,8 +166,7 @@ jobs:
           images: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=ref,event=branch
-            type=ref,event=pr
+            type=raw,value=${{ needs.release.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
             type=sha,format=short
 
       - name: Build and push Docker image
@@ -141,18 +176,3 @@ jobs:
           file: ./src/planora.API/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-
-      - name: Add Docker image PR comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
-        with:
-          recreate: true
-          header: docker-image
-          message: |
-            ## Docker Image 🐳
-            Image has been built for this PR.
-            To test it locally, run:
-            ```
-            docker pull ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
-            docker run -p 8080:80 ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:pr-${{ github.event.pull_request.number }}
-            ```
