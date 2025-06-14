@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     if: success() && (github.ref == 'refs/heads/main')
     outputs:
-      version: ${{ steps.semantic_release.outputs.new_release_version }}
+      version: ${{ steps.get_tag.outputs.new_release_version }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -137,13 +137,28 @@ jobs:
           git config --global url."https://x-access-token:${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
 
       - name: Run semantic-release
+        uses: cycjimmy/semantic-release-action@v4
         id: semantic_release
+        with:
+          branches: |
+            [
+              'main'
+            ]
+          extra_plugins: |
+            @semantic-release/git
+            @semantic-release/changelog
+            @semantic-release/github
+            @semantic-release/commit-analyzer
+            @semantic-release/release-notes-generator
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Get latest tag
+        id: get_tag
         run: |
-          npx semantic-release
           VERSION=$(git describe --tags --abbrev=0)
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
+          echo "new_release_version=$VERSION"
   docker:
     name: Build and Publish Docker Image
     needs: [ build, release ]
