@@ -38,7 +38,26 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
+      - name: Check commit scope
+        id: check_scope
+        if: github.event_name == 'push'
+        run: |
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          if echo "$LAST_COMMIT_MSG" | grep -q "scope(frontend)" || echo "$LAST_COMMIT_MSG" | grep -q "(frontend)" || echo "$LAST_COMMIT_MSG" | grep -q "frontend:"; then
+            echo "This commit is for frontend only, skipping backend workflow"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Running backend workflow"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Early exit if frontend commit
+        if: steps.check_scope.outputs.skip == 'true'
+        run: exit 0
+
+      # Continue with remaining steps only if not skipped
       - name: Setup .NET
+        if: ${{ github.event_name != 'push' || steps.check_scope.outputs.skip != 'true' }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}

@@ -33,7 +33,26 @@ jobs:
           token: ${{ secrets.GH_PAT }}
           persist-credentials: true
 
+      - name: Check commit scope
+        id: check_scope
+        if: github.event_name == 'push'
+        run: |
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          if echo "$LAST_COMMIT_MSG" | grep -q "scope(backend)" || echo "$LAST_COMMIT_MSG" | grep -q "(backend)" || echo "$LAST_COMMIT_MSG" | grep -q "backend:"; then
+            echo "This commit is for backend only, skipping frontend workflow"
+            echo "skip=true" >> $GITHUB_OUTPUT
+          else
+            echo "Running frontend workflow"
+            echo "skip=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Early exit if backend commit
+        if: steps.check_scope.outputs.skip == 'true'
+        run: exit 0
+
+      # Continue with remaining steps only if not skipped
       - name: Set up Node.js
+        if: ${{ github.event_name != 'push' || steps.check_scope.outputs.skip != 'true' }}
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
