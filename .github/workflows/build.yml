@@ -128,6 +128,10 @@ jobs:
       - name: Install dependencies
         run: npm install --no-save semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/commit-analyzer @semantic-release/release-notes-generator
 
+      - name: Debug GH_PAT presence
+        run: |
+          if [ -z "${{ secrets.GH_PAT }}" ]; then echo "GH_PAT is NOT set"; else echo "GH_PAT is set"; fi
+
       - name: Run semantic-release
         id: semantic_release
         env:
