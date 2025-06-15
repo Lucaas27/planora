@@ -1,20 +1,24 @@
-export default {
+module.exports = {
     branches: ["main"],
     tagFormat: "backend-v${version}",
     plugins: [
         [
             "@semantic-release/commit-analyzer",
             {
-                preset: "conventionalcommits",
+                preset: "angular",
                 parserOpts: {
                     noteKeywords: ["BREAKING CHANGE", "BREAKING CHANGES"]
-                }
+                },
+                releaseRules: [
+                    {type: "feat", scope: "backend", release: "minor"},
+                    {type: "fix", scope: "backend", release: "patch"}
+                ]
             }
         ],
         [
             "@semantic-release/release-notes-generator",
             {
-                preset: "conventionalcommits",
+                preset: "angular",
                 writerOpts: {
                     transform: (commit, context) => {
                         if (commit.scope !== 'backend') {
@@ -28,4 +32,3 @@ export default {
         "@semantic-release/github"
     ]
 };
-

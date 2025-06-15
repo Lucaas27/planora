@@ -5,16 +5,20 @@ export default {
         [
             "@semantic-release/commit-analyzer",
             {
-                preset: "conventionalcommits",
+                preset: "angular",
                 parserOpts: {
                     noteKeywords: ["BREAKING CHANGE", "BREAKING CHANGES"]
-                }
+                },
+                releaseRules: [
+                    {type: "feat", scope: "frontend", release: "minor"},
+                    {type: "fix", scope: "frontend", release: "patch"}
+                ]
             }
         ],
         [
             "@semantic-release/release-notes-generator",
             {
-                preset: "conventionalcommits",
+                preset: "angular",
                 writerOpts: {
                     transform: (commit, context) => {
                         if (commit.scope !== 'frontend') {
@@ -28,4 +32,3 @@ export default {
         "@semantic-release/github"
     ]
 };
-
