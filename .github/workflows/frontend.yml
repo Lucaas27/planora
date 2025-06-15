@@ -115,6 +115,12 @@ jobs:
       - name: Run semantic-release
         uses: cycjimmy/semantic-release-action@v4
         id: semantic_release
+        with:
+          extends: ./client/package.json
+          branches: |
+            [
+              'main'
+            ]
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
@@ -136,14 +142,15 @@ jobs:
   docker:
     name: Build and Publish Frontend Docker Image
     needs: [ build, release ]
+    if: success() && (github.ref == 'refs/heads/main') && needs.release.outputs.version != ''
     runs-on: ubuntu-latest
-    if: success() && (github.ref == 'refs/heads/main')
     permissions:
       contents: read
       packages: write
       pull-requests: write
     env:
       FRONTEND_IMAGE_NAME: planora-frontend
+      RELEASE_VERSION: ${{ needs.release.outputs.version || '1.0.0' }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -165,7 +172,7 @@ jobs:
           images: ghcr.io/${{ github.repository_owner }}/${{ env.FRONTEND_IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=raw,value=${{ needs.release.outputs.version }},enable=${{ github.ref == 'refs/heads/main' }}
+            type=raw,value=${{ env.RELEASE_VERSION }},enable=${{ github.ref == 'refs/heads/main' }}
             type=sha,format=short
 
       - name: Build and push Docker image
