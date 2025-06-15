@@ -224,7 +224,6 @@ jobs:
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
             type=raw,value=${{ env.RELEASE_VERSION }},enable=${{ github.ref == 'refs/heads/main' }}
-            type=sha,format=short
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -241,4 +240,3 @@ jobs:
           echo "Tags:" >> $GITHUB_STEP_SUMMARY
           echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
           echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ needs.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:sha-$(git rev-parse --short HEAD)" >> $GITHUB_STEP_SUMMARY
