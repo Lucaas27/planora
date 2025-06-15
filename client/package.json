@@ -35,42 +35,5 @@
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5",
     "vite-plugin-mkcert": "^1.17.8"
-  },
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "tagFormat": "frontend-v${version}",
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "releaseRules": [
-            {
-              "type": "feat",
-              "scope": "frontend",
-              "release": "minor"
-            },
-            {
-              "type": "fix",
-              "scope": "frontend",
-              "release": "patch"
-            }
-          ]
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "writerOpts": {
-            "commitsFilter": [
-              "scope",
-              "frontend"
-            ]
-          }
-        }
-      ],
-      "@semantic-release/github"
-    ]
   }
 }

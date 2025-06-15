@@ -2,42 +2,5 @@
   "name": "planora-backend",
   "version": "0.0.0-development",
   "description": "Planora API Backend",
-  "private": true,
-  "release": {
-    "branches": [
-      "main"
-    ],
-    "tagFormat": "backend-v${version}",
-    "plugins": [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          "releaseRules": [
-            {
-              "type": "feat",
-              "scope": "backend",
-              "release": "minor"
-            },
-            {
-              "type": "fix",
-              "scope": "backend",
-              "release": "patch"
-            }
-          ]
-        }
-      ],
-      [
-        "@semantic-release/release-notes-generator",
-        {
-          "writerOpts": {
-            "commitsFilter": [
-              "scope",
-              "backend"
-            ]
-          }
-        }
-      ],
-      "@semantic-release/github"
-    ]
-  }
+  "private": true
 }
