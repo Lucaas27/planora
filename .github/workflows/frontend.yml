@@ -117,6 +117,7 @@ jobs:
         id: semantic_release
         with:
           working_directory: ./client
+          extends: ./package.json
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
