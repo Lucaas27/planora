@@ -22,16 +22,16 @@ on:
       - '.github/workflows/frontend.yml'
 
 jobs:
-  build:
-    name: Build & Test Frontend
+  check:
+    name: Check Commit Scope
     runs-on: ubuntu-latest
+    outputs:
+      should_run_frontend: ${{ steps.check_scope.outputs.should_run_frontend }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_PAT }}
-          persist-credentials: true
 
       - name: Check commit scope
         id: check_scope
@@ -40,19 +40,30 @@ jobs:
           LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
           if echo "$LAST_COMMIT_MSG" | grep -q "scope(backend)" || echo "$LAST_COMMIT_MSG" | grep -q "(backend)" || echo "$LAST_COMMIT_MSG" | grep -q "backend:"; then
             echo "This commit is for backend only, skipping frontend workflow"
-            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "should_run_frontend=false" >> $GITHUB_OUTPUT
           else
             echo "Running frontend workflow"
-            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "should_run_frontend=true" >> $GITHUB_OUTPUT
           fi
+      
+      # For non-push events (PRs, etc.), always run
+      - name: Set default for non-push events
+        if: github.event_name != 'push'
+        run: echo "should_run_frontend=true" >> $GITHUB_OUTPUT
+  
+  build:
+    name: Build & Test Frontend
+    needs: check
+    if: needs.check.outputs.should_run_frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
-      - name: Early exit if backend commit
-        if: steps.check_scope.outputs.skip == 'true'
-        run: exit 0
-
-      # Continue with remaining steps only if not skipped
       - name: Set up Node.js
-        if: ${{ github.event_name != 'push' || steps.check_scope.outputs.skip != 'true' }}
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
@@ -65,7 +76,7 @@ jobs:
 
       - name: Lint
         working-directory: ./client
-        run: npm run lint || true
+        run: npm run lint
 
       - name: Build
         working-directory: ./client
@@ -73,7 +84,7 @@ jobs:
 
       - name: Test
         working-directory: ./client
-        run: npm test || true
+        run: npm run test
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -110,7 +121,8 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: |
-          VERSION=$(git describe --tags --abbrev=0 --match "frontend-v*" | sed 's/frontend-v//')
+          # Try to get the latest tag, but use 1.0.0 as default if no tags exist yet
+          VERSION=$(git describe --tags --abbrev=0 --match "frontend-v*" | sed 's/frontend-v//' || echo "1.0.0")
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "new_release_version=$VERSION"
 

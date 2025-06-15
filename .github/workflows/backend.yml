@@ -27,8 +27,39 @@ env:
   DOCKER_REGISTRY: ghcr.io/${{ github.repository_owner }}
 
 jobs:
+  check:
+    name: Check Commit Scope
+    runs-on: ubuntu-latest
+    outputs:
+      should_run_backend: ${{ steps.check_scope.outputs.should_run_backend }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit scope
+        id: check_scope
+        if: github.event_name == 'push'
+        run: |
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          if echo "$LAST_COMMIT_MSG" | grep -q "scope(frontend)" || echo "$LAST_COMMIT_MSG" | grep -q "(frontend)" || echo "$LAST_COMMIT_MSG" | grep -q "frontend:"; then
+            echo "This commit is for frontend only, skipping backend workflow"
+            echo "should_run_backend=false" >> $GITHUB_OUTPUT
+          else
+            echo "Running backend workflow"
+            echo "should_run_backend=true" >> $GITHUB_OUTPUT
+          fi
+      
+      # For non-push events (PRs, etc.), always run
+      - name: Set default for non-push events
+        if: github.event_name != 'push'
+        run: echo "should_run_backend=true" >> $GITHUB_OUTPUT
+  
   build:
-    name: Build & Test
+    name: Build & Test Backend
+    needs: check
+    if: needs.check.outputs.should_run_backend == 'true'
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -38,26 +69,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Check commit scope
-        id: check_scope
-        if: github.event_name == 'push'
-        run: |
-          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-          if echo "$LAST_COMMIT_MSG" | grep -q "scope(frontend)" || echo "$LAST_COMMIT_MSG" | grep -q "(frontend)" || echo "$LAST_COMMIT_MSG" | grep -q "frontend:"; then
-            echo "This commit is for frontend only, skipping backend workflow"
-            echo "skip=true" >> $GITHUB_OUTPUT
-          else
-            echo "Running backend workflow"
-            echo "skip=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Early exit if frontend commit
-        if: steps.check_scope.outputs.skip == 'true'
-        run: exit 0
-
-      # Continue with remaining steps only if not skipped
       - name: Setup .NET
-        if: ${{ github.event_name != 'push' || steps.check_scope.outputs.skip != 'true' }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
@@ -163,7 +175,8 @@ jobs:
       - name: Get latest tag
         id: get_tag
         run: |
-          VERSION=$(git describe --tags --abbrev=0 --match "backend-v*" | sed 's/backend-v//')
+          # Try to get the latest tag, but use 1.0.0 as default if no tags exist yet
+          VERSION=$(git describe --tags --abbrev=0 --match "backend-v*" | sed 's/backend-v//' || echo "1.0.0")
           echo "new_release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "new_release_version=$VERSION"
 
