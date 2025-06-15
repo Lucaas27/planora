@@ -170,11 +170,7 @@ jobs:
         uses: cycjimmy/semantic-release-action@v4
         id: semantic_release
         with:
-          extends: ./package.json
-          branches: |
-            [
-              'main'
-            ]
+          working_directory: .
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
