@@ -23,7 +23,7 @@
             "scope",
             "subject"
           ],
-          "commitPartial": "* {{header}} | {{#if scope}} **{{scope}}**{{/if}} | {{#if hash}} {{hash}}{{/if}}\n"
+          "commitPartial": "* {{header}} {{#if scope}} | **{{scope}}** | {{/if}} {{#if hash}} {{hash}} {{/if}}\n"
         }
       }
     ],

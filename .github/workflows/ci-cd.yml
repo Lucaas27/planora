@@ -146,12 +146,13 @@ jobs:
           path: client/dist/
 
   release-app:
-    name: Application Release
+    name: Semantic Release
     needs: [ build-backend, build-frontend ]
     runs-on: ubuntu-latest
     if: success() && (github.ref == 'refs/heads/main')
     outputs:
       version: ${{ steps.get_tag.outputs.new_release_version }}
+      new_release_published: ${{ steps.semantic_release.outputs.new_release_published }}
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -191,7 +192,7 @@ jobs:
   docker-backend:
     name: Build and Publish Backend Docker Image
     needs: release-app
-    if: success() && (github.ref == 'refs/heads/main') && needs.release-app.outputs.version != ''
+    if: success() && (github.ref == 'refs/heads/main') && needs.release-app.outputs.version != '' && needs.release-app.outputs.new_release_published == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -243,7 +244,7 @@ jobs:
   docker-frontend:
     name: Build and Publish Frontend Docker Image
     needs: release-app
-    if: success() && (github.ref == 'refs/heads/main') && needs.release-app.outputs.version != ''
+    if: success() && (github.ref == 'refs/heads/main') && needs.release-app.outputs.version != '' && needs.release-app.outputs.new_release_published == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -291,4 +292,3 @@ jobs:
           echo "Tags:" >> $GITHUB_STEP_SUMMARY
           echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:latest" >> $GITHUB_STEP_SUMMARY
           echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.RELEASE_VERSION }}" >> $GITHUB_STEP_SUMMARY
-
