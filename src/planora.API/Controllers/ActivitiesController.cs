@@ -64,5 +64,6 @@ public class ActivitiesController
         var result = await Mediator.Command(requestWithId, cancellationToken);
 
         return result.MapToActionResult(StatusCodes.Status204NoContent);
+        
     }
 }
