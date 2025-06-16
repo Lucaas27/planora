@@ -25,4 +25,5 @@ RUN dotnet publish "./planora.API.csproj" -c $BUILD_CONFIGURATION -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+ENV ASPNETCORE_URLS=http://0.0.0.0:8080;https://0.0.0.0:8081
 ENTRYPOINT ["dotnet", "planora.API.dll"]
