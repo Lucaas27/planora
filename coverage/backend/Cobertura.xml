@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.958974358974359" branch-rate="0.8958333333333334" lines-covered="187" lines-valid="195" branches-covered="43" branches-valid="48" complexity="132" version="0" timestamp="1750370321">
+<coverage line-rate="0.958974358974359" branch-rate="0.8958333333333334" lines-covered="187" lines-valid="195" branches-covered="43" branches-valid="48" complexity="132" version="0" timestamp="1750371505">
   <sources>
     <source>/home/runner/work/planora/planora/src/</source>
   </sources>
