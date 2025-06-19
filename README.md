@@ -1,7 +1,7 @@
 # Planora
 
 [![Build](https://github.com/Lucaas27/planora/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Lucaas27/planora/actions/workflows/ci-cd.yml)
-[![Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue)](https://lucaas27.github.io/planora/coverage/)
+[![Backend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue)](https://lucaas27.github.io/planora/coverage/backend)
 [![Docker Image (API)](https://img.shields.io/badge/Docker-API%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-api)
 [![Docker Image (Frontend)](https://img.shields.io/badge/Docker-Frontend%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-frontend)
 
