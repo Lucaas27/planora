@@ -24,7 +24,7 @@ public class DeleteActivityHandlerTests
             Id = Guid.NewGuid(),
             Name = "Name",
             Description = "Description",
-            Date = DateTime.UtcNow.AddDays(-5),
+            Date = DateTime.UtcNow.AddDays(5),
             Category = "Category",
             City = "City",
             Location = "Location"
@@ -109,7 +109,7 @@ public class DeleteActivityHandlerTests
             Id = Guid.NewGuid(),
             Name = "Name",
             Description = "Description",
-            Date = DateTime.UtcNow.AddDays(-5),
+            Date = DateTime.UtcNow.AddDays(5),
             Category = "Category",
             City = "City",
             Location = "Location"
