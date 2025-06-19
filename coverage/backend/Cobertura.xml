@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.9505494505494505" branch-rate="0.8863636363636364" lines-covered="173" lines-valid="182" branches-covered="39" branches-valid="44" complexity="125" version="0" timestamp="1750116494">
+<coverage line-rate="0.958974358974359" branch-rate="0.8958333333333334" lines-covered="187" lines-valid="195" branches-covered="43" branches-valid="48" complexity="132" version="0" timestamp="1750370321">
   <sources>
     <source>/home/runner/work/planora/planora/src/</source>
   </sources>
   <packages>
-    <package name="planora.Application" line-rate="0.9745222929936306" branch-rate="0.8863636363636364" complexity="104">
+    <package name="planora.Application" line-rate="0.9761904761904762" branch-rate="0.8958333333333334" complexity="110">
       <classes>
         <class name="planora.Application.Common.Mediator" filename="/home/runner/work/planora/planora/src/planora.Application/Common/Mediator.cs" line-rate="1" branch-rate="0.75" complexity="13">
           <methods>
@@ -77,17 +77,17 @@
           <methods>
             <method name="get_IsSuccess" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="22" hits="44" branch="false" />
+                <line number="22" hits="50" branch="false" />
               </lines>
             </method>
             <method name="get_Error" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="23" hits="18" branch="false" />
+                <line number="23" hits="24" branch="false" />
               </lines>
             </method>
             <method name="Success" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="27" hits="4" branch="false" />
+                <line number="27" hits="6" branch="false" />
               </lines>
             </method>
             <method name="Success" signature="(TValue)" line-rate="1" branch-rate="1" complexity="1">
@@ -97,7 +97,7 @@
             </method>
             <method name="Failure" signature="(planora.Domain.Errors.AppError)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="38" hits="6" branch="false" />
+                <line number="38" hits="10" branch="false" />
               </lines>
             </method>
             <method name="Failure" signature="(planora.Domain.Errors.AppError)" line-rate="1" branch-rate="1" complexity="1">
@@ -107,36 +107,36 @@
             </method>
             <method name="op_Implicit" signature="(planora.Domain.Errors.AppError)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="49" hits="4" branch="false" />
+                <line number="49" hits="8" branch="false" />
               </lines>
             </method>
             <method name=".ctor" signature="(System.Boolean,planora.Domain.Errors.AppError)" line-rate="0.8571428571428571" branch-rate="0.75" complexity="8">
               <lines>
-                <line number="10" hits="28" branch="false" />
-                <line number="12" hits="28" branch="true" condition-coverage="75% (6/8)" />
-                <line number="13" hits="28" branch="false" />
+                <line number="10" hits="34" branch="false" />
+                <line number="12" hits="34" branch="true" condition-coverage="75% (6/8)" />
+                <line number="13" hits="34" branch="false" />
                 <line number="15" hits="0" branch="false" />
-                <line number="18" hits="28" branch="false" />
-                <line number="19" hits="28" branch="false" />
-                <line number="20" hits="28" branch="false" />
+                <line number="18" hits="34" branch="false" />
+                <line number="19" hits="34" branch="false" />
+                <line number="20" hits="34" branch="false" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="10" hits="28" branch="false" />
-            <line number="12" hits="28" branch="true" condition-coverage="75% (6/8)" />
-            <line number="13" hits="28" branch="false" />
+            <line number="10" hits="34" branch="false" />
+            <line number="12" hits="34" branch="true" condition-coverage="75% (6/8)" />
+            <line number="13" hits="34" branch="false" />
             <line number="15" hits="0" branch="false" />
-            <line number="18" hits="28" branch="false" />
-            <line number="19" hits="28" branch="false" />
-            <line number="20" hits="28" branch="false" />
-            <line number="22" hits="44" branch="false" />
-            <line number="23" hits="18" branch="false" />
-            <line number="27" hits="4" branch="false" />
+            <line number="18" hits="34" branch="false" />
+            <line number="19" hits="34" branch="false" />
+            <line number="20" hits="34" branch="false" />
+            <line number="22" hits="50" branch="false" />
+            <line number="23" hits="24" branch="false" />
+            <line number="27" hits="6" branch="false" />
             <line number="32" hits="12" branch="false" />
-            <line number="38" hits="6" branch="false" />
+            <line number="38" hits="10" branch="false" />
             <line number="43" hits="6" branch="false" />
-            <line number="49" hits="4" branch="false" />
+            <line number="49" hits="8" branch="false" />
           </lines>
         </class>
         <class name="planora.Application.Common.Result`1" filename="/home/runner/work/planora/planora/src/planora.Application/Common/Result.cs" line-rate="1" branch-rate="1" complexity="5">
@@ -249,54 +249,54 @@
           <methods>
             <method name="get_Name" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="9" hits="16" branch="false" />
+                <line number="8" hits="16" branch="false" />
               </lines>
             </method>
             <method name="get_Description" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="10" hits="16" branch="false" />
+                <line number="9" hits="16" branch="false" />
               </lines>
             </method>
             <method name="get_Date" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="11" hits="16" branch="false" />
+                <line number="10" hits="16" branch="false" />
               </lines>
             </method>
             <method name="get_Category" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="12" hits="16" branch="false" />
+                <line number="11" hits="16" branch="false" />
               </lines>
             </method>
             <method name="get_City" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="15" hits="16" branch="false" />
+                <line number="14" hits="16" branch="false" />
               </lines>
             </method>
             <method name="get_Location" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="16" hits="16" branch="false" />
+                <line number="15" hits="16" branch="false" />
               </lines>
             </method>
             <method name="get_Latitude" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="17" hits="10" branch="false" />
+                <line number="16" hits="10" branch="false" />
               </lines>
             </method>
             <method name="get_Longitude" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="18" hits="10" branch="false" />
+                <line number="17" hits="10" branch="false" />
               </lines>
             </method>
           </methods>
           <lines>
+            <line number="8" hits="16" branch="false" />
             <line number="9" hits="16" branch="false" />
             <line number="10" hits="16" branch="false" />
             <line number="11" hits="16" branch="false" />
-            <line number="12" hits="16" branch="false" />
+            <line number="14" hits="16" branch="false" />
             <line number="15" hits="16" branch="false" />
-            <line number="16" hits="16" branch="false" />
+            <line number="16" hits="10" branch="false" />
             <line number="17" hits="10" branch="false" />
-            <line number="18" hits="10" branch="false" />
           </lines>
         </class>
         <class name="planora.Application.Features.Activities.Commands.Create.CreateActivityResponse" filename="/home/runner/work/planora/planora/src/planora.Application/Features/Activities/Commands/Create/CreateActivityResponse.cs" line-rate="1" branch-rate="1" complexity="1">
@@ -309,6 +309,52 @@
           </methods>
           <lines>
             <line number="5" hits="2" branch="false" />
+          </lines>
+        </class>
+        <class name="planora.Application.Features.Activities.Commands.Delete.DeleteActivityHandler" filename="/home/runner/work/planora/planora/src/planora.Application/Features/Activities/Commands/Delete/DeleteActivityHandler.cs" line-rate="1" branch-rate="1" complexity="5">
+          <methods>
+            <method name=".ctor" signature="(planora.Domain.Repositories.IRepository`1&lt;planora.Domain.Entities.Activity&gt;)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="9" hits="8" branch="false" />
+              </lines>
+            </method>
+            <method name="Handle" signature="()" line-rate="1" branch-rate="1" complexity="4">
+              <lines>
+                <line number="14" hits="8" branch="false" />
+                <line number="16" hits="8" branch="false" />
+                <line number="19" hits="8" branch="true" condition-coverage="100% (2/2)" />
+                <line number="21" hits="2" branch="false" />
+                <line number="25" hits="6" branch="true" condition-coverage="100% (2/2)" />
+                <line number="27" hits="2" branch="false" />
+                <line number="30" hits="4" branch="false" />
+                <line number="32" hits="2" branch="false" />
+                <line number="33" hits="6" branch="false" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="9" hits="8" branch="false" />
+            <line number="14" hits="8" branch="false" />
+            <line number="16" hits="8" branch="false" />
+            <line number="19" hits="8" branch="true" condition-coverage="100% (2/2)" />
+            <line number="21" hits="2" branch="false" />
+            <line number="25" hits="6" branch="true" condition-coverage="100% (2/2)" />
+            <line number="27" hits="2" branch="false" />
+            <line number="30" hits="4" branch="false" />
+            <line number="32" hits="2" branch="false" />
+            <line number="33" hits="6" branch="false" />
+          </lines>
+        </class>
+        <class name="planora.Application.Features.Activities.Commands.Delete.DeleteActivityRequest" filename="/home/runner/work/planora/planora/src/planora.Application/Features/Activities/Commands/Delete/DeleteActivityRequest.cs" line-rate="1" branch-rate="1" complexity="1">
+          <methods>
+            <method name="get_Id" signature="()" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="10" hits="16" branch="false" />
+              </lines>
+            </method>
+          </methods>
+          <lines>
+            <line number="10" hits="16" branch="false" />
           </lines>
         </class>
         <class name="planora.Application.Features.Activities.Commands.Update.UpdateActivityHandler" filename="/home/runner/work/planora/planora/src/planora.Application/Features/Activities/Commands/Update/UpdateActivityHandler.cs" line-rate="1" branch-rate="1" complexity="3">
@@ -703,43 +749,43 @@
         </class>
       </classes>
     </package>
-    <package name="planora.Domain" line-rate="0.8" branch-rate="1" complexity="21">
+    <package name="planora.Domain" line-rate="0.8518518518518519" branch-rate="1" complexity="22">
       <classes>
         <class name="planora.Domain.Entities.Activity" filename="/home/runner/work/planora/planora/src/planora.Domain/Entities/Activity.cs" line-rate="1" branch-rate="1" complexity="9">
           <methods>
             <method name="get_Name" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="5" hits="74" branch="false" />
+                <line number="5" hits="80" branch="false" />
               </lines>
             </method>
             <method name="get_Description" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="6" hits="80" branch="false" />
+                <line number="6" hits="86" branch="false" />
               </lines>
             </method>
             <method name="get_Date" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="76" branch="false" />
+                <line number="7" hits="88" branch="false" />
               </lines>
             </method>
             <method name="get_Category" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="8" hits="80" branch="false" />
+                <line number="8" hits="86" branch="false" />
               </lines>
             </method>
             <method name="get_IsActive" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="9" hits="88" branch="false" />
+                <line number="9" hits="94" branch="false" />
               </lines>
             </method>
             <method name="get_City" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="11" hits="76" branch="false" />
+                <line number="11" hits="82" branch="false" />
               </lines>
             </method>
             <method name="get_Location" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="12" hits="66" branch="false" />
+                <line number="12" hits="72" branch="false" />
               </lines>
             </method>
             <method name="get_Latitude" signature="()" line-rate="1" branch-rate="1" complexity="1">
@@ -754,13 +800,13 @@
             </method>
           </methods>
           <lines>
-            <line number="5" hits="74" branch="false" />
-            <line number="6" hits="80" branch="false" />
-            <line number="7" hits="76" branch="false" />
-            <line number="8" hits="80" branch="false" />
-            <line number="9" hits="88" branch="false" />
-            <line number="11" hits="76" branch="false" />
-            <line number="12" hits="66" branch="false" />
+            <line number="5" hits="80" branch="false" />
+            <line number="6" hits="86" branch="false" />
+            <line number="7" hits="88" branch="false" />
+            <line number="8" hits="86" branch="false" />
+            <line number="9" hits="94" branch="false" />
+            <line number="11" hits="82" branch="false" />
+            <line number="12" hits="72" branch="false" />
             <line number="13" hits="54" branch="false" />
             <line number="14" hits="50" branch="false" />
           </lines>
@@ -769,7 +815,7 @@
           <methods>
             <method name="get_Id" signature="()" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="10" hits="52" branch="false" />
+                <line number="10" hits="72" branch="false" />
               </lines>
             </method>
             <method name="get_CreatedDate" signature="()" line-rate="1" branch-rate="1" complexity="1">
@@ -784,24 +830,32 @@
             </method>
           </methods>
           <lines>
-            <line number="10" hits="52" branch="false" />
+            <line number="10" hits="72" branch="false" />
             <line number="12" hits="10" branch="false" />
             <line number="13" hits="10" branch="false" />
           </lines>
         </class>
-        <class name="planora.Domain.Errors.ActivityError" filename="/home/runner/work/planora/planora/src/planora.Domain/Errors/ActivityError.cs" line-rate="1" branch-rate="1" complexity="1">
+        <class name="planora.Domain.Errors.ActivityError" filename="/home/runner/work/planora/planora/src/planora.Domain/Errors/ActivityError.cs" line-rate="1" branch-rate="1" complexity="2">
           <methods>
             <method name="NotFound" signature="(System.Guid)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="8" branch="false" />
+                <line number="7" hits="12" branch="false" />
+              </lines>
+            </method>
+            <method name="CannotDeletePastActivity" signature="(System.Guid)" line-rate="1" branch-rate="1" complexity="1">
+              <lines>
+                <line number="12" hits="4" branch="false" />
+                <line number="13" hits="4" branch="false" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="7" hits="8" branch="false" />
+            <line number="7" hits="12" branch="false" />
+            <line number="12" hits="4" branch="false" />
+            <line number="13" hits="4" branch="false" />
           </lines>
         </class>
-        <class name="planora.Domain.Errors.AppError" filename="/home/runner/work/planora/planora/src/planora.Domain/Errors/AppError.cs" line-rate="0.5833333333333334" branch-rate="1" complexity="8">
+        <class name="planora.Domain.Errors.AppError" filename="/home/runner/work/planora/planora/src/planora.Domain/Errors/AppError.cs" line-rate="0.6666666666666666" branch-rate="1" complexity="8">
           <methods>
             <method name="get_Code" signature="()" line-rate="0" branch-rate="1" complexity="1">
               <lines>
@@ -823,9 +877,9 @@
                 <line number="22" hits="8" branch="false" />
               </lines>
             </method>
-            <method name="Validation" signature="(System.String,System.String)" line-rate="0" branch-rate="1" complexity="1">
+            <method name="Validation" signature="(System.String,System.String)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="27" hits="0" branch="false" />
+                <line number="27" hits="4" branch="false" />
               </lines>
             </method>
             <method name="Conflict" signature="(System.String,System.String)" line-rate="0" branch-rate="1" complexity="1">
@@ -835,32 +889,32 @@
             </method>
             <method name="NotFound" signature="(System.String,System.String)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="37" hits="8" branch="false" />
+                <line number="37" hits="12" branch="false" />
               </lines>
             </method>
             <method name=".ctor" signature="(System.String,System.String,planora.Domain.Errors.ErrorType)" line-rate="1" branch-rate="1" complexity="1">
               <lines>
-                <line number="7" hits="16" branch="false" />
-                <line number="9" hits="16" branch="false" />
-                <line number="10" hits="16" branch="false" />
-                <line number="11" hits="16" branch="false" />
-                <line number="12" hits="16" branch="false" />
+                <line number="7" hits="24" branch="false" />
+                <line number="9" hits="24" branch="false" />
+                <line number="10" hits="24" branch="false" />
+                <line number="11" hits="24" branch="false" />
+                <line number="12" hits="24" branch="false" />
               </lines>
             </method>
           </methods>
           <lines>
-            <line number="7" hits="16" branch="false" />
-            <line number="9" hits="16" branch="false" />
-            <line number="10" hits="16" branch="false" />
-            <line number="11" hits="16" branch="false" />
-            <line number="12" hits="16" branch="false" />
+            <line number="7" hits="24" branch="false" />
+            <line number="9" hits="24" branch="false" />
+            <line number="10" hits="24" branch="false" />
+            <line number="11" hits="24" branch="false" />
+            <line number="12" hits="24" branch="false" />
             <line number="14" hits="0" branch="false" />
             <line number="15" hits="0" branch="false" />
             <line number="18" hits="0" branch="false" />
             <line number="22" hits="8" branch="false" />
-            <line number="27" hits="0" branch="false" />
+            <line number="27" hits="4" branch="false" />
             <line number="32" hits="0" branch="false" />
-            <line number="37" hits="8" branch="false" />
+            <line number="37" hits="12" branch="false" />
           </lines>
         </class>
       </classes>
