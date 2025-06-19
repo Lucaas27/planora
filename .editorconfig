@@ -205,6 +205,9 @@ dotnet_diagnostic.S2326.severity = suggestion
 # Disable CA1707: Identifiers should not contain underscores
 dotnet_diagnostic.CA1707.severity = none
 
+# Disable classes should not be empty
+dotnet_diagnostic.S2094.severity = none
+
 # Disable CA1848: use the LoggerMessage delegates
 dotnet_diagnostic.CA1848.severity = none
 

@@ -4,6 +4,7 @@ using planora.API.Common;
 using planora.API.Extensions;
 using planora.Application.Common;
 using planora.Application.Features.Activities.Commands.Create;
+using planora.Application.Features.Activities.Commands.Delete;
 using planora.Application.Features.Activities.Commands.Update;
 using planora.Application.Features.Activities.Queries.GetAll;
 using planora.Application.Features.Activities.Queries.GetDetails;
@@ -64,6 +65,21 @@ public class ActivitiesController
         var result = await Mediator.Command(requestWithId, cancellationToken);
 
         return result.MapToActionResult(StatusCodes.Status204NoContent);
-        
+    }
+
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IActionResult> DeleteActivity(
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+    )
+    {
+        var requestWithId = new DeleteActivityRequest { Id = id };
+        var result = await Mediator.Command(requestWithId, cancellationToken);
+
+        return result.MapToActionResult(StatusCodes.Status204NoContent);
     }
 }
