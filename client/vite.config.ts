@@ -1,7 +1,7 @@
-import { defineConfig } from "vite";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react-swc";
-import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
+import { defineConfig } from "vite";
 import mkcert from "vite-plugin-mkcert";
 
 const __filename = fileURLToPath(import.meta.url);
