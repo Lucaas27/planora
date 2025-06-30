@@ -8,13 +8,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
-    server: {
-        port: 3000
+  envDir: "./src/environments",
+  server: {
+    port: 3000,
+  },
+  plugins: [react(), mkcert()],
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src/"),
     },
-    plugins: [react(), mkcert()],
-    resolve: {
-        alias: {
-            "@": resolve(__dirname, "src/")
-        }
-    }
+  },
 });
