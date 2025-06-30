@@ -69,7 +69,7 @@ jobs:
           hide_complexity: false
           indicators: true
           output: both
-          thresholds: '60 80'
+          thresholds: "60 80"
 
       - name: Add coverage PR comment
         uses: marocchino/sticky-pull-request-comment@v2
@@ -120,16 +120,73 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache: 'npm'
-          cache-dependency-path: 'client/package-lock.json'
+          cache: "npm"
+          cache-dependency-path: "client/package-lock.json"
 
       - name: Install dependencies
         working-directory: ./client
         run: npm ci
 
-      - name: Lint
+      - name: Check code formatting with Biome
+        id: formatting
         working-directory: ./client
-        run: npm run lint
+        run: |
+          echo "🔍 Checking code formatting with Biome..."
+          npm run format:check
+          echo "✅ All files are properly formatted!"
+
+      - name: Lint with Biome
+        id: linting
+        working-directory: ./client
+        run: |
+          echo "🔍 Running Biome linter..."
+          npm run lint
+          echo "✅ No linting issues found!"
+
+      - name: Type check
+        id: typecheck
+        working-directory: ./client
+        run: |
+          echo "🔍 Running TypeScript type checking..."
+          npx tsc --noEmit
+          echo "✅ No type errors found!"
+
+      - name: Security audit
+        id: security
+        working-directory: ./client
+        run: |
+          echo "🔍 Running security audit..."
+          npm audit --audit-level high
+          echo "✅ No high-severity vulnerabilities found!"
+
+      - name: Check for outdated dependencies
+        working-directory: ./client
+        run: |
+          echo "📦 Checking for outdated dependencies..."
+          npm outdated || true
+          echo "ℹ️  Dependency check complete!"
+          - name: Type check
+          id: typecheck
+          working-directory: ./client
+          run: |
+            echo "🔍 Running TypeScript type checking..."
+            npx tsc --noEmit
+            echo "✅ No type errors found!"
+
+      - name: Security audit
+        id: securityCheck
+        working-directory: ./client
+        run: |
+          echo "🔍 Running security audit..."
+          npm audit --audit-level high
+          echo "✅ No high-severity vulnerabilities found!"
+
+      - name: Check for outdated dependencies
+        working-directory: ./client
+        run: |
+          echo "📦 Checking for outdated dependencies..."
+          npm outdated || true
+          echo "ℹ️  Dependency check complete!"
 
       - name: Build
         working-directory: ./client
@@ -145,9 +202,25 @@ jobs:
           name: frontend-build
           path: client/dist/
 
+      - name: Code Quality Summary
+        if: always()
+        run: |
+          echo "## 📊 Code Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Frontend (React + TypeScript)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎨 Code Formatting | ${{ steps.formatting.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔍 Linting | ${{ steps.linting.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏗️ Type Checking | ${{ steps.typecheck.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔒 Security Audit | ${{ steps.securityCheck.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🛠️ **Tools Used:** Biome v2.0.6, TypeScript, npm audit" >> $GITHUB_STEP_SUMMARY
+
   release-app:
     name: Semantic Release
-    needs: [ build-backend, build-frontend ]
+    needs: [build-backend, build-frontend]
     runs-on: ubuntu-latest
     if: success() && (github.ref == 'refs/heads/main')
     outputs:
@@ -310,7 +383,7 @@ jobs:
           echo "- ${{ env.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE_NAME }}:${{ env.RELEASE_VERSION }}" >> $GITHUB_STEP_SUMMARY
   deploy:
     name: Deploy to Coolify
-    needs: [ docker-backend, docker-frontend, release-app ]
+    needs: [docker-backend, docker-frontend, release-app]
     if: ${{ success() && github.ref == 'refs/heads/main' && needs.release-app.outputs.version != '' && needs.release-app.outputs.new_release_published == 'true' }}
     runs-on: ubuntu-latest
     steps:
