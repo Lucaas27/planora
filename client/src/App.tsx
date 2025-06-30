@@ -1,29 +1,21 @@
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import type { Activity } from "@/types/api";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Layout } from "@/components/layout/layout";
+import { DashboardPage } from "@/features/dashboard";
+import { ActivitiesPage } from "@/features/activities";
+import { MetadataProvider } from "@/providers/metadata-provider";
 
 function App() {
-  const [activities, setActivities] = useState<Activity[]>([]);
-
-  useEffect(() => {
-    axios
-      .get<Activity[]>("https://localhost:5001/api/activities")
-      .then((response) => setActivities(response.data));
-  }, []);
-
   return (
-    <>
-      <Typography variant={"h3"}>Planora</Typography>
-
-      <List>
-        {activities.map((activity) => (
-          <ListItem key={activity.id}>
-            <ListItemText>{activity.name}</ListItemText>
-          </ListItem>
-        ))}
-      </List>
-    </>
+    <BrowserRouter>
+      <MetadataProvider>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+            <Route path="/activities" element={<ActivitiesPage />} />
+          </Routes>
+        </Layout>
+      </MetadataProvider>
+    </BrowserRouter>
   );
 }
 
