@@ -13,7 +13,7 @@ function Layout({ children }: LayoutProps) {
       {/* Main content */}
       <main className="flex-1">
         {/* Container for the main content */}
-        <div className="container mx-auto px-6">{children}</div>
+        <div className="container mx-auto px-4 max-w-7xl">{children}</div>
       </main>
 
       <Footer />
