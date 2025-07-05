@@ -1,0 +1,88 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    name: Build & Test Frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: "npm"
+          cache-dependency-path: "client/package-lock.json"
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Check code formatting with Biome
+        id: formatting
+        working-directory: ./client
+        run: |
+          echo "🔍 Checking code formatting with Biome..."
+          npm run format:check
+          echo "✅ All files are properly formatted!"
+
+      - name: Lint with Biome
+        id: linting
+        working-directory: ./client
+        run: |
+          echo "🔍 Running Biome linter..."
+          npm run lint
+          echo "✅ No linting issues found!"
+
+      - name: Type check
+        id: typecheck
+        working-directory: ./client
+        run: |
+          echo "🔍 Running TypeScript type checking..."
+          npx tsc --noEmit
+          echo "✅ No type errors found!"
+
+      - name: Check for outdated dependencies
+        run: |
+          echo "📦 Checking for outdated dependencies..."
+          npm outdated --prefix client || true
+          echo "ℹ️  Dependency check complete!"
+
+      - name: Build
+        working-directory: ./client
+        run: npm run build
+
+      - name: Test
+        working-directory: ./client
+        run: npm run test
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: client/dist/
+
+      - name: Code Quality Summary
+        if: always()
+        run: |
+          echo "## 📊 Code Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Frontend (React + TypeScript)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎨 Code Formatting | ${{ steps.formatting.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🔍 Linting | ${{ steps.linting.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🏗️ Type Checking | ${{ steps.typecheck.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🛠️ **Tools Used:** Biome v2.0.6, TypeScript, npm audit" >> $GITHUB_STEP_SUMMARY

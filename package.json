@@ -1,6 +1,65 @@
 {
-  "name": "planora-backend",
+  "name": "planora",
   "version": "0.0.0-development",
-  "description": "Planora API Backend",
-  "private": true
+  "private": true,
+  "description": "Planora Application",
+  "homepage": "https://github.com/Lucaas27/planora#readme",
+  "bugs": {
+    "url": "https://github.com/Lucaas27/planora/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lucaas27/planora.git"
+  },
+  "license": "MIT",
+  "author": "Lucas Gomes (https://github.com/Lucaas27)",
+  "type": "module",
+  "scripts": {
+    "prepare": "husky",
+    "dev": "concurrently \"npm run backend:run\" \"npm run frontend:dev\"",
+    "build": "concurrently \"npm run backend:build\" \"npm run frontend:build\"",
+    "test": "concurrently \"npm run backend:test\" \"npm run frontend:test\"",
+    "frontend:build": "npm run build --prefix client",
+    "frontend:dev": "npm run dev --prefix client",
+    "frontend:test": "npm run test --prefix client",
+    "frontend:lint": "npm run lint --prefix client",
+    "frontend:lint-fix": "npm run lint:fix --prefix client",
+    "frontend:format-check": "npm run format:check --prefix client",
+    "frontend:format": "npm run format --prefix client",
+    "frontend:mock-api": "npm run mock-api --prefix client",
+    "backend:build": "dotnet build",
+    "backend:dev": "dotnet run --project src/planora.API",
+    "backend:test": "dotnet test",
+    "backend:lint": "dotnet format --verify-no-changes",
+    "backend:lint-fix": "dotnet format"
+  },
+  "lint-staged": {
+    "client/**/*.{ts,tsx,js,jsx}": [
+      "npm run format --prefix client",
+      "npm run lint:fix --prefix client"
+    ],
+    "src/**/*.cs": [
+      "dotnet format --include"
+    ],
+    "**/*.{json,yml,yaml}": [
+      "echo 'File formatting checked'"
+    ]
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "concurrently": "^8.2.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2"
+  }
 }

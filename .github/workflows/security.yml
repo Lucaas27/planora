@@ -1,0 +1,84 @@
+name: Security Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 2 * * 1' # Run weekly on Mondays at 2 AM
+
+env:
+  DOTNET_VERSION: "9.x"
+
+jobs:
+  codeql-analysis:
+    name: Backend Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: csharp
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        run: dotnet restore --locked-mode
+
+      - name: Build for analysis
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  frontend-security:
+    name: Frontend Security Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: "npm"
+          cache-dependency-path: "./client/package-lock.json"
+
+      - name: Install dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Build frontend for analysis
+        working-directory: ./client
+        run: npm run build
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+      - name: Security audit
+        working-directory: ./client
+        run: |
+          echo "🔍 Running security audit..."
+          npm audit --audit-level high
+          echo "✅ No high-severity vulnerabilities found!"

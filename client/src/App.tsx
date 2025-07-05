@@ -1,35 +1,28 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import env from "@/lib/environment";
 import type { Activity } from "@/types/api";
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
+import "@/index.css";
+import Layout from "@/components/layout";
 
 function App() {
+  const [activities, setActivities] = useState<Activity[]>([]);
 
-    const [activities, setActivities] = useState<Activity[]>([]);
+  useEffect(() => {
+    axios
+      .get<Activity[]>(`${env.API_BASE_URL}/activities`)
+      .then((response) => setActivities(response.data));
+  }, []);
 
-    useEffect(() => {
-        axios.get<Activity[]>("https://localhost:5001/api/activities")
-                .then(response => setActivities(response.data));
-    }, []);
-
-
-    return (
-            <>
-                <Typography variant={"h3"}>
-                    Planora
-                </Typography>
-
-                <List>
-                    {activities.map(activity => (
-                            <ListItem key={activity.id}>
-                                <ListItemText>
-                                    {activity.name}
-                                </ListItemText>
-                            </ListItem>
-                    ))}
-                </List>
-            </>
-    );
+  return (
+    <Layout>
+      {activities.map((activity) => (
+        <div key={activity.id} className="activity-item">
+          <span className="text-body">{activity.name}</span>
+        </div>
+      ))}
+    </Layout>
+  );
 }
 
 export default App;
