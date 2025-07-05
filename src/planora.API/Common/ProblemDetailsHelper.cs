@@ -53,7 +53,9 @@ static internal class ProblemDetailsHelper
         httpContext.Response.StatusCode = GetStatusCode(appError.Type);
         return new ProblemDetailsContext
         {
-            HttpContext = httpContext, ProblemDetails = CreateProblemDetails(appError), Exception = exception
+            HttpContext = httpContext,
+            ProblemDetails = CreateProblemDetails(appError),
+            Exception = exception
         };
     }
 }

@@ -475,3 +475,4 @@ node_modules
 dist
 dist-ssr
 coverage/
+diff.txt

@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 // import Twitter from "@/assets/twitter.svg";
 // import Twitch from "@/assets/twitch.svg";
-import Github from "@/assets/github.svg?react";
+import Github from "@/assets/github.svg";
 
 const footerLinks = [
   {
@@ -34,11 +34,12 @@ function Footer() {
     <footer>
       <Separator />
       <div className="container max-w-7xl mx-auto px-4">
-        <div className="py-6 flex flex-col-reverse md:flex-row items-center justify-between gap-x-2 gap-y-5 px-6 xl:px-0">
+        <div className="py-6 flex flex-col-reverse md:flex-row items-center justify-between px-6 xl:px-0">
           {/* Social Media Links */}
-          <div className="flex items-center justify-center gap-5 text-muted-foreground">
+          <div className="flex items-center justify-center gap-5 hover:opacity-70">
             <a href="https://github.com/Lucaas27" target="_blank" rel="noopener noreferrer">
-              <Github width={24} height={24} />
+              {/* @ts-ignore */}
+              <Github className="h-6 w-6 " />
             </a>
           </div>
           {/* Copyright */}

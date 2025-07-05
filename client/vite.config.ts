@@ -15,7 +15,19 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  plugins: [react(), mkcert(), tailwindcss(), svgr()],
+  plugins: [react(), mkcert(), tailwindcss(), svgr({
+    svgrOptions: {
+      exportType: 'default',
+      ref: true,
+      svgo: true,
+      titleProp: true,
+      replaceAttrValues: {
+        '#000': 'currentColor',
+        '#000000': 'currentColor',
+      }
+    },
+    include: "**/*.svg",
+  })],
   resolve: {
     alias: {
       "@": resolve(__dirname, "src/"),
