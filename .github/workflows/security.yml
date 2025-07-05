@@ -13,7 +13,7 @@ env:
 
 jobs:
   codeql-analysis:
-    name: CodeQL Security Analysis
+    name: Backend Security Analysis
     runs-on: ubuntu-latest
     permissions:
       actions: read
