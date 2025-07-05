@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import env from "@/lib/environment";
-import type { Activity } from "@/types/api";
 import "@/index.css";
 import Layout from "@/components/layout";
+import type { Activity } from "@/features/activities/types/activity";
+import { ActivitiesDashboard } from "@/features/activities/components/activities-dashboard";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -16,11 +17,7 @@ function App() {
 
   return (
     <Layout>
-      {activities.map((activity) => (
-        <div key={activity.id} className="activity-item">
-          <span className="text-body">{activity.name}</span>
-        </div>
-      ))}
+      <ActivitiesDashboard activities={activities} />
     </Layout>
   );
 }

@@ -1,7 +1,7 @@
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import {dirname, resolve} from "node:path";
+import {fileURLToPath} from "node:url";
 import react from "@vitejs/plugin-react-swc";
-import { defineConfig } from "vite";
+import {defineConfig} from "vite";
 import mkcert from "vite-plugin-mkcert";
 import tailwindcss from "@tailwindcss/vite";
 import svgr from "vite-plugin-svgr";

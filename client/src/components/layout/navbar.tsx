@@ -62,9 +62,9 @@ function Navbar() {
         {/* Logo */}
         <a
           href="/"
-          className="flex justify-center items-center gap-2 text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200"
+          className="flex justify-center items-center gap-2 text-transparent  bg-gradient-to-br-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200"
         >
-          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+          <div className="h-8 w-8 rounded-xl bg-gradient-to-br-primary flex items-center justify-center shadow-md">
             <Calendar className="h-5 w-5 text-white" />
           </div>
           <span className="text-2xl tracking-tighter">Planora</span>
@@ -94,8 +94,8 @@ function Navbar() {
             {/* Mobile Logo */}
             <SheetHeader>
               <SheetTitle>
-                <div className="flex justify-center items-center gap-2 text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200">
-                  <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+                <div className="flex justify-center items-center gap-2 text-transparent bg-gradient-to-br-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200">
+                  <div className="h-8 w-8 rounded-xl bg-gradient-to-br-primary flex items-center justify-center shadow-md">
                     <Calendar className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-2xl tracking-tighter">Planora</span>

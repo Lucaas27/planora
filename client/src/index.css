@@ -176,3 +176,9 @@
     @apply cursor-pointer;
   }
 }
+
+@layer utilities {
+  .bg-gradient-to-br-primary {
+    @apply bg-gradient-to-br from-secondary to-primary;
+  }
+}
