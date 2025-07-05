@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/Lucaas27/planora/compare/v1.3.0...v1.3.1) (2025-07-05)
+
+
+### Bug Fixes
+
+* fix(ci): remove push trigger from workflows and update release assets  | **ci** |   3b54f524d3648fc094878dde180c489f86d8926c
+
 # [1.3.0](https://github.com/Lucaas27/planora/compare/v1.2.0...v1.3.0) (2025-07-05)
 
 
