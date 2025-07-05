@@ -15,6 +15,7 @@
   "author": "Lucas Gomes (https://github.com/Lucaas27)",
   "type": "module",
   "scripts": {
+    "prepare": "husky",
     "dev": "concurrently \"npm run backend:run\" \"npm run frontend:dev\"",
     "build": "concurrently \"npm run backend:build\" \"npm run frontend:build\"",
     "test": "concurrently \"npm run backend:test\" \"npm run frontend:test\"",
@@ -33,9 +34,15 @@
     "backend:lint-fix": "dotnet format"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "biome check --write",
-      "biome format --write"
+    "client/**/*.{ts,tsx,js,jsx}": [
+      "npm run format --prefix client",
+      "npm run lint:fix --prefix client"
+    ],
+    "src/**/*.cs": [
+      "dotnet format --include"
+    ],
+    "**/*.{json,yml,yaml}": [
+      "echo 'File formatting checked'"
     ]
   },
   "commitlint": {

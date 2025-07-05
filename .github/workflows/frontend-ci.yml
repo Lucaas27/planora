@@ -46,9 +46,10 @@ jobs:
 
       - name: Type check
         id: typecheck
+        working-directory: ./client
         run: |
           echo "🔍 Running TypeScript type checking..."
-          npx tsc --noEmit --project client/tsconfig.json
+          npx tsc --noEmit
           echo "✅ No type errors found!"
 
       - name: Check for outdated dependencies

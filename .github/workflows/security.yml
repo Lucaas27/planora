@@ -80,5 +80,5 @@ jobs:
         working-directory: ./client
         run: |
           echo "🔍 Running security audit..."
-          npm audit --audit-level high --prefix client
+          npm audit --audit-level high
           echo "✅ No high-severity vulnerabilities found!"
