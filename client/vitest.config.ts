@@ -1,4 +1,4 @@
-import {defineConfig} from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react-swc';
 import * as path from 'path';
 
@@ -11,7 +11,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8', // or istanbul
       reportsDirectory: './coverage',
-      reporter: ['text', 'json', 'html']
+      reporter: ['text', 'json-summary', 'json', 'html']
     }
   },
   resolve: {

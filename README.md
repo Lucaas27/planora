@@ -3,7 +3,8 @@
 [![Backend Build](https://img.shields.io/github/actions/workflow/status/Lucaas27/planora/backend-ci.yml?branch=main&label=Backend&logo=dotnet)](https://github.com/Lucaas27/planora/actions/workflows/backend-ci.yml)
 [![Frontend Build](https://img.shields.io/github/actions/workflow/status/Lucaas27/planora/backend-ci.yml?branch=main&label=Frontend&logo=react)](https://github.com/Lucaas27/planora/actions/workflows/frontend-ci.yml)
 [![Deployment](https://img.shields.io/github/actions/workflow/status/Lucaas27/planora/backend-ci.yml?branch=main&label=Deployment&logo=github)](https://github.com/Lucaas27/planora/actions/workflows/release-deploy.yml)
-[![Backend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue?logo=html5)](https://lucaas27.github.io/planora/coverage/backend)
+[![Backend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue?logo=dotnet)](https://lucaas27.github.io/planora/coverage/backend)
+[![Frontend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-green?logo=react)](https://lucaas27.github.io/planora/coverage/frontend)
 [![Docker Image (API)](https://img.shields.io/badge/Docker-API%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-api)
 [![Docker Image (Frontend)](https://img.shields.io/badge/Docker-Frontend%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-frontend)
 

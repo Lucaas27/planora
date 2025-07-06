@@ -60,9 +60,33 @@ jobs:
         working-directory: ./client
         run: npm run build
 
-      - name: Test
+      - name: Test with coverage
+        id: test
         working-directory: ./client
-        run: npm run test
+        run: npm run test:coverage
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: client/coverage/
+
+      - name: Create coverage summary
+        uses: davelosert/vitest-coverage-report-action@v2
+        if: github.event_name == 'pull_request'
+        with:
+          json-summary-path: 'client/coverage/coverage-summary.json'
+          json-final-path: 'client/coverage/coverage-final.json'
+          vite-config-path: 'client/vitest.config.ts'
+
+      - name: Deploy coverage to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: client/coverage
+          destination_dir: coverage/frontend
+          keep_files: true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -82,5 +106,8 @@ jobs:
           echo "| 🎨 Code Formatting | ${{ steps.formatting.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| 🔍 Linting | ${{ steps.linting.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| 🏗️ Type Checking | ${{ steps.typecheck.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🧪 Tests & Coverage | ${{ steps.test.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🛠️ **Tools Used:** Biome v2.0.6, TypeScript, npm audit" >> $GITHUB_STEP_SUMMARY
+          echo "� **Coverage Report:** [View Frontend Coverage](https://lucaas27.github.io/planora/coverage/frontend)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "�🛠️ **Tools Used:** Biome v2.0.6, TypeScript, Vitest, npm audit" >> $GITHUB_STEP_SUMMARY
