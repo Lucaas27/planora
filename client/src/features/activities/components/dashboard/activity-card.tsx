@@ -39,7 +39,10 @@ export function ActivityCard({ activity, isActivitySelected, onSelect }: Activit
           <Badge className="font-medium ml-auto">{activity.category}</Badge>
         </div>
         {/* Bookmark icon */}
-        <Bookmark className="h-5 w-5 absolute right-4 top-4 hover:cursor-pointer backdrop-blur-sm" />
+        <Bookmark
+          className="h-5 w-5 absolute right-4 top-4 hover:cursor-pointer backdrop-blur-sm"
+          data-testid="bookmark-icon"
+        />
       </CardHeader>
 
       <CardContent className="pt-0">
@@ -63,8 +66,8 @@ export function ActivityCard({ activity, isActivitySelected, onSelect }: Activit
               variant="outline"
               size="sm"
               onClick={() => onSelect(activity.id)}
-              className="flex-1 rounded-xl border-muted transition-all 
-                "
+              className="flex-1 rounded-xl border-muted transition-all"
+              data-testid="view-activity-button"
             >
               <Eye className="mr-1.5 h-3.5 w-3.5" />
               View

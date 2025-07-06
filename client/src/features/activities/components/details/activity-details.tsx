@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button.tsx";
 
 interface ActivityDetailsProps {
   activity: Activity;
-  onClose: () => void;
+  handleOnCloseDetails: () => void;
 }
 
-export function ActivityDetails({ activity, onClose }: ActivityDetailsProps) {
+export function ActivityDetails({ activity, handleOnCloseDetails }: ActivityDetailsProps) {
   return (
     <Card className="rounded-2xl border-0 pt-0 shadow-md bg-">
       {/* Header Image & Category */}
@@ -24,7 +24,11 @@ export function ActivityDetails({ activity, onClose }: ActivityDetailsProps) {
         </div>
 
         <div className="absolute top-4 right-4 text-primary-foreground">
-          <X className="hover:cursor-pointer" onClick={() => onClose()} />
+          <X
+            className="hover:cursor-pointer"
+            onClick={() => handleOnCloseDetails()}
+            data-testid="close-details-button"
+          />
         </div>
         {/* Bookmark icon */}
         <Button

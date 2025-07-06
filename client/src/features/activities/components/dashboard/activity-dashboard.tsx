@@ -8,8 +8,8 @@ interface ActivityDashboardProps {
 }
 export function ActivityDashboard({ activities }: ActivityDashboardProps) {
   const [selectedId, setSelectedId] = useState<string | undefined>();
-  const selectedActivity = activities.find((a) => a.id === selectedId);
-  const onClose = () => setSelectedId(undefined);
+  const selectedActivity = activities?.find((a) => a.id === selectedId);
+  const handleOnCloseDetails = () => setSelectedId(undefined);
 
   const noActivityFound = () => (
     <div className="py-12 text-center text-muted-foreground">No activities found.</div>
@@ -27,12 +27,16 @@ export function ActivityDashboard({ activities }: ActivityDashboardProps) {
             ? "w-full max-w-sm transition-all duration-200"
             : "w-full transition-all duration-200 max-w-2xl"
         }
+        data-testid="activity-list-panel"
       >
         <ActivityList activities={activities} selectedId={selectedId} onSelect={setSelectedId} />
       </div>
       {selectedActivity && (
-        <div className="flex-1">
-          <ActivityDetails activity={selectedActivity} onClose={onClose} />
+        <div className="flex-1" data-testid="activity-details-panel">
+          <ActivityDetails
+            activity={selectedActivity}
+            handleOnCloseDetails={handleOnCloseDetails}
+          />
         </div>
       )}
     </div>
