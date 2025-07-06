@@ -4,26 +4,27 @@
       "id": "1",
       "name": "Morning Yoga Session",
       "description": "Start your day with relaxing yoga",
+      "category": "Fitness",
       "location": "Central Park",
       "city": "New York",
       "date": "2025-08-15T08:00:00Z",
-      "isActive": true,
       "createdDate": "2025-01-01T10:00:00Z"
     },
     {
       "id": "2",
       "name": "Photography Workshop",
       "description": "Learn professional photography techniques",
+      "category": "Arts",
       "location": "Art Studio Downtown",
       "city": "San Francisco",
       "date": "2025-01-20T14:00:00Z",
-      "isActive": true,
       "createdDate": "2025-01-02T15:30:00Z"
     },
     {
       "id": "3",
       "name": "Cooking Masterclass",
       "description": "Italian cuisine cooking class",
+      "category": "Food",
       "location": "Culinary Institute",
       "city": "Chicago",
       "date": "2025-01-25T18:00:00Z",
@@ -34,20 +35,20 @@
       "id": "4",
       "name": "Rock Climbing Adventure",
       "description": "Indoor rock climbing for beginners",
+      "category": "Adventure",
       "location": "Adventure Sports Center",
       "city": "Denver",
       "date": "2025-02-01T10:00:00Z",
-      "isActive": true,
       "createdDate": "2025-01-04T09:45:00Z"
     },
     {
       "id": "5",
       "name": "Book Club Meeting",
       "description": "Monthly book discussion",
+      "category": "Education",
       "location": "Local Library",
       "city": "Austin",
       "date": "2025-02-05T19:00:00Z",
-      "isActive": true,
       "createdDate": "2025-01-05T16:20:00Z"
     }
   ]

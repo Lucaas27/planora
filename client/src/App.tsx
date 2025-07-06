@@ -4,7 +4,7 @@ import env from "@/lib/environment";
 import "@/index.css";
 import Layout from "@/components/layout";
 import type { Activity } from "@/features/activities/types/activity";
-import { ActivitiesDashboard } from "@/features/activities/components/activities-dashboard";
+import { ActivityDashboard } from "@/features/activities/components/dashboard/activity-dashboard";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Layout>
-      <ActivitiesDashboard activities={activities} />
+      <ActivityDashboard activities={activities} />
     </Layout>
   );
 }
