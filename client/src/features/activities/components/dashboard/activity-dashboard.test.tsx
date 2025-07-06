@@ -103,7 +103,7 @@ describe("ActivityDashboard", () => {
     expect(narrowListContainer).toBeInTheDocument();
   });
 
-  it("closes activity details when handleOnCloseDetails is called", async () => {
+  it("closes activity details when onCloseDetails is called", async () => {
     const user = userEvent.setup();
 
     render(<ActivityDashboard activities={mockActivities} />);

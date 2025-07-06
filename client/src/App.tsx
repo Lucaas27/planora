@@ -8,6 +8,10 @@ import { ActivityDashboard } from "@/features/activities/components/dashboard/ac
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [selectedId, setSelectedId] = useState<string | undefined>();
+  const handleOnCloseDetails = () => setSelectedId(undefined);
+  const handleOnSelect = (id: string) => setSelectedId(id);
+  const selectedActivity = activities?.find((a) => a.id === selectedId);
 
   useEffect(() => {
     axios
@@ -17,7 +21,12 @@ function App() {
 
   return (
     <Layout>
-      <ActivityDashboard activities={activities} />
+      <ActivityDashboard
+        activities={activities}
+        selectedActivity={selectedActivity}
+        onCloseDetails={handleOnCloseDetails}
+        onSelect={handleOnSelect}
+      />
     </Layout>
   );
 }

@@ -3,7 +3,7 @@ import { ActivityCard } from "@/features/activities/components/dashboard/activit
 
 interface ActivityListProps {
   activities: Activity[];
-  selectedId: string | undefined;
+  selectedId?: string;
   onSelect: (id: string) => void;
 }
 

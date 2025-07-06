@@ -43,7 +43,7 @@ describe("ActivityDetails", () => {
     expect(screen.getByText(/15 Jul 25/)).toBeInTheDocument();
   });
 
-  it("renders close button and calls handleOnCloseDetails when clicked", async () => {
+  it("renders close button and calls onCloseDetails when clicked", async () => {
     const user = userEvent.setup();
 
     render(<ActivityDetails activity={mockActivity} handleOnCloseDetails={mockOnClose} />);

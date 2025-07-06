@@ -1,16 +1,19 @@
 import type { Activity } from "@/features/activities/types/activity";
 import { ActivityList } from "@/features/activities/components/dashboard/activity-list.tsx";
 import { ActivityDetails } from "@/features/activities/components/details/activity-details.tsx";
-import { useState } from "react";
 
 interface ActivityDashboardProps {
   activities: Activity[];
+  selectedActivity?: Activity;
+  onCloseDetails: () => void;
+  onSelect: (id: string) => void;
 }
-export function ActivityDashboard({ activities }: ActivityDashboardProps) {
-  const [selectedId, setSelectedId] = useState<string | undefined>();
-  const selectedActivity = activities?.find((a) => a.id === selectedId);
-  const handleOnCloseDetails = () => setSelectedId(undefined);
-
+export function ActivityDashboard({
+  activities,
+  selectedActivity,
+  onCloseDetails,
+  onSelect,
+}: ActivityDashboardProps) {
   const noActivityFound = () => (
     <div className="py-12 text-center text-muted-foreground">No activities found.</div>
   );
@@ -29,14 +32,15 @@ export function ActivityDashboard({ activities }: ActivityDashboardProps) {
         }
         data-testid="activity-list-panel"
       >
-        <ActivityList activities={activities} selectedId={selectedId} onSelect={setSelectedId} />
+        <ActivityList
+          activities={activities}
+          selectedId={selectedActivity?.id}
+          onSelect={onSelect}
+        />
       </div>
       {selectedActivity && (
         <div className="flex-1" data-testid="activity-details-panel">
-          <ActivityDetails
-            activity={selectedActivity}
-            handleOnCloseDetails={handleOnCloseDetails}
-          />
+          <ActivityDetails activity={selectedActivity} handleOnCloseDetails={onCloseDetails} />
         </div>
       )}
     </div>
