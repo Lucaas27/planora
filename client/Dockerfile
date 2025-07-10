@@ -2,6 +2,10 @@
 FROM node:lts-alpine as build
 WORKDIR /app
 
+# Accept build argument
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+
 # Copy package files and install dependencies
 COPY client/package*.json ./
 RUN npm ci
