@@ -62,9 +62,10 @@ function Navbar() {
         {/* Logo */}
         <a
           href="/"
-          className="flex justify-center items-center gap-2 text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200"
+          className="flex justify-center items-center gap-2 text-transparent  bg-gradient-to-br-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200"
+          data-testid="navbar-logo"
         >
-          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+          <div className="h-8 w-8 rounded-xl bg-gradient-to-br-primary flex items-center justify-center shadow-md">
             <Calendar className="h-5 w-5 text-white" />
           </div>
           <span className="text-2xl tracking-tighter">Planora</span>
@@ -76,14 +77,14 @@ function Navbar() {
             <NavigationMenuList>{desktopNavLinks}</NavigationMenuList>
           </NavigationMenu>
           <div className="hidden items-center gap-4 lg:flex">
-            <Button>Sign In</Button>
+            <Button>Create Activity</Button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         <Sheet>
           {/* Trigger Button for Mobile Menu */}
-          <SheetTrigger asChild className="lg:hidden">
+          <SheetTrigger asChild className="lg:hidden" data-testid="navbar-mobile-menu-trigger">
             <Button variant="outline" size="icon">
               <MenuIcon className="h-4 w-4" />
             </Button>
@@ -94,8 +95,8 @@ function Navbar() {
             {/* Mobile Logo */}
             <SheetHeader>
               <SheetTitle>
-                <div className="flex justify-center items-center gap-2 text-transparent bg-gradient-to-r from-secondary to-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200">
-                  <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+                <div className="flex justify-center items-center gap-2 text-transparent bg-gradient-to-br-primary bg-clip-text font-semibold hover:opacity-80 transition-opacity duration-200">
+                  <div className="h-8 w-8 rounded-xl bg-gradient-to-br-primary flex items-center justify-center shadow-md">
                     <Calendar className="h-5 w-5 text-white" />
                   </div>
                   <span className="text-2xl tracking-tighter">Planora</span>
@@ -106,7 +107,7 @@ function Navbar() {
             <div className="flex flex-col p-4">
               <div className="flex flex-col text-center gap-4">{mobileNavLinks}</div>
               <div className="mt-6 flex flex-col gap-4">
-                <Button>Sign in</Button>
+                <Button>Create Activity</Button>
               </div>
             </div>
           </SheetContent>

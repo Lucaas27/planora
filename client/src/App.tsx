@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import env from "@/lib/environment";
-import type { Activity } from "@/types/api";
 import "@/index.css";
 import Layout from "@/components/layout";
+import type { Activity } from "@/features/activities/types/activity";
+import { ActivityDashboard } from "@/features/activities/components/dashboard/activity-dashboard";
 
 function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
+  const [selectedId, setSelectedId] = useState<string | undefined>();
+  const handleOnCloseDetails = () => setSelectedId(undefined);
+  const handleOnSelect = (id: string) => setSelectedId(id);
+  const selectedActivity = activities?.find((a) => a.id === selectedId);
 
   useEffect(() => {
     axios
@@ -16,11 +21,12 @@ function App() {
 
   return (
     <Layout>
-      {activities.map((activity) => (
-        <div key={activity.id} className="activity-item">
-          <span className="text-body">{activity.name}</span>
-        </div>
-      ))}
+      <ActivityDashboard
+        activities={activities}
+        selectedActivity={selectedActivity}
+        onCloseDetails={handleOnCloseDetails}
+        onSelect={handleOnSelect}
+      />
     </Layout>
   );
 }

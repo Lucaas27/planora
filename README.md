@@ -1,7 +1,10 @@
 # Planora
 
-[![Build](https://github.com/Lucaas27/planora/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Lucaas27/planora/actions/workflows/ci-cd.yml)
-[![Backend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue)](https://lucaas27.github.io/planora/coverage/backend)
+[![Backend Build](https://img.shields.io/github/actions/workflow/status/Lucaas27/planora/backend-ci.yml?branch=main&label=Backend&logo=dotnet)](https://github.com/Lucaas27/planora/actions/workflows/backend-ci.yml)
+[![Frontend Build](https://img.shields.io/github/actions/workflow/status/Lucaas27/planora/backend-ci.yml?branch=main&label=Frontend&logo=react)](https://github.com/Lucaas27/planora/actions/workflows/frontend-ci.yml)
+[![Deployment](https://img.shields.io/github/actions/workflow/status/Lucaas27/planora/backend-ci.yml?branch=main&label=Deployment&logo=github)](https://github.com/Lucaas27/planora/actions/workflows/release-deploy.yml)
+[![Backend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-blue?logo=dotnet)](https://lucaas27.github.io/planora/coverage/backend)
+[![Frontend Code Coverage](https://img.shields.io/badge/Code%20Coverage-Visit%20Report-green?logo=react)](https://lucaas27.github.io/planora/coverage/frontend)
 [![Docker Image (API)](https://img.shields.io/badge/Docker-API%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-api)
 [![Docker Image (Frontend)](https://img.shields.io/badge/Docker-Frontend%20Image-blue?logo=docker)](https://github.com/Lucaas27/planora/pkgs/container/planora-frontend)
 
@@ -65,9 +68,14 @@ The solution follows Clean Architecture principles:
 
 ## CI/CD Pipeline
 
-The project uses GitHub Actions for continuous integration and deployment:
+The project uses GitHub Actions for continuous integration and deployment with separate workflows:
 
-- Automated builds and tests on push and pull requests
-- Code coverage reporting
-- Docker image publication to GitHub Container Registry
-- Automated deployment to GitHub Pages for coverage reports
+### Pull Request Workflows (Quality Gates)
+- **Backend CI**: Automated .NET builds, tests, and code coverage on backend changes
+- **Frontend CI**: Automated Node.js builds, tests, and linting on frontend changes
+- **Security Analysis**: CodeQL security scanning and dependency vulnerability checks
+
+### Main Branch Workflow (Deployment)
+- **Release & Deploy**: Semantic versioning, Docker image builds, and automated deployment to production
+- Publishes Docker images to GitHub Container Registry with proper tagging
+- Deploys both backend and frontend services to Coolify hosting platform
