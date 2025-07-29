@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/Lucaas27/planora/compare/v1.4.1...v1.4.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* fix: update GitHub token for coverage report deployment   80f1c3e80ec0ba6ec22f75706c6905a1c718ff27
+
 ## [1.4.1](https://github.com/Lucaas27/planora/compare/v1.4.0...v1.4.1) (2025-07-29)
 
 
