@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Lucaas27/planora/compare/v1.4.0...v1.4.1) (2025-07-29)
+
+
+### Bug Fixes
+
+* fix: move coverage report deployment to release workflow   d870e81e3aac15be96e42e37aa69e86a61cac50a
+
 # [1.4.0](https://github.com/Lucaas27/planora/compare/v1.3.1...v1.4.0) (2025-07-10)
 
 
