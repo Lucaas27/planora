@@ -139,7 +139,7 @@ jobs:
       - name: Deploy backend coverage to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAT }}
           publish_dir: ${{ github.workspace }}/coverage-report-backend
           destination_dir: coverage/backend
           keep_files: true
@@ -147,7 +147,7 @@ jobs:
       - name: Deploy frontend coverage to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAT }}
           publish_dir: client/coverage
           destination_dir: coverage/frontend
           keep_files: true
