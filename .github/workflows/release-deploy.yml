@@ -82,6 +82,72 @@ jobs:
           echo "✅ New version published: ${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
           echo "Release notes: https://github.com/${{ github.repository }}/releases/tag/v${{ steps.semantic_release.outputs.new_release_version }}" >> $GITHUB_STEP_SUMMARY
 
+  deploy-coverage:
+    name: Deploy Coverage Reports
+    needs: check-prerequisites
+    runs-on: ubuntu-latest
+    if: needs.check-prerequisites.outputs.should_deploy == 'true'
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: "npm"
+          cache-dependency-path: "client/package-lock.json"
+
+      # Backend coverage
+      - name: Restore backend dependencies
+        run: dotnet restore --locked-mode
+
+      - name: Build backend
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run backend tests with coverage
+        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --logger trx --collect:"XPlat Code Coverage"
+
+      - name: Generate backend coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
+        with:
+          reports: "**/*.cobertura.xml"
+          targetdir: "${{ github.workspace }}/coverage-report-backend"
+          reporttypes: "Html"
+
+      # Frontend coverage
+      - name: Install frontend dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: Run frontend tests with coverage
+        working-directory: ./client
+        run: npm run test:coverage
+
+      # Deploy both coverage reports
+      - name: Deploy backend coverage to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ github.workspace }}/coverage-report-backend
+          destination_dir: coverage/backend
+          keep_files: true
+
+      - name: Deploy frontend coverage to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: client/coverage
+          destination_dir: coverage/frontend
+          keep_files: true
+
   docker-backend:
     name: Build Backend Docker Image
     needs: release
