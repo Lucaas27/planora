@@ -89,12 +89,3 @@ jobs:
         with:
           name: coverage-html
           path: ${{ github.workspace }}/coverage-report
-
-      - name: Deploy coverage to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ github.workspace }}/coverage-report
-          destination_dir: coverage/backend
-          keep_files: true

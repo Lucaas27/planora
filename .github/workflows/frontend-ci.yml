@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-test:
     name: Build & Test Frontend
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -78,15 +79,6 @@ jobs:
           json-summary-path: 'client/coverage/coverage-summary.json'
           json-final-path: 'client/coverage/coverage-final.json'
           vite-config-path: 'client/vitest.config.ts'
-
-      - name: Deploy coverage to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: client/coverage
-          destination_dir: coverage/frontend
-          keep_files: true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
