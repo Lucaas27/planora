@@ -10,72 +10,55 @@
 
 ## Overview
 
-Planora is a modern event planning application built with .NET 9. It enables users to create, manage, and participate in
-various activities and events with an intuitive interface and robust backend.
+This is a small POC to validate architecture and developer workflow. It explores three main ideas:
 
-## Features
-
-- Create and manage activities with detailed information
-- Browse activities by category, location, and date
-- User authentication and authorization
-- Real-time updates for activity changes
-- Responsive design for mobile and desktop
+- A minimal, custom mediator implementation in `planora.Application` to serve as a replacement for libraries like MediatR.
+- Automated release tooling with `semantic-release` to validate changelog generation and semantic versioning in CI.
+- Centralized NuGet version management using a `Directory.Packages.props` file to pin shared package versions across projects.
 
 ## Technology Stack
 
 - **.NET 9**: Backend API and services
 - **Clean Architecture**: Domain-driven design with clear separation of concerns
-- **Entity Framework Core**: Data access and ORM
+- **Entity Framework Core**: SQLite provider configured currently
 - **Docker**: Containerization for consistent deployment
 - **GitHub Actions**: CI/CD pipeline with automated testing
-- **Shouldly, NSubstitute & xUnit**: Comprehensive test suite
+- **Shouldly, NSubstitute & xUnit**: Test suite
 
 ## Getting Started
 
-### Pre Requisites
+Run locally:
 
-- .NET 9 SDK
-- Docker (optional)
+1. Backend (API):
 
-### Running Locally
+```powershell
+dotnet restore
+dotnet build
+dotnet run --project src/planora.API
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Lucaas27/planora.git
-   cd planora
-   ```
+The API by default serves HTTPS in Development and will attempt to apply EF migrations on startup. If you get an HTTPS developer certificate error, run:
 
-2. Restore and build the solution:
-   ```bash
-   dotnet restore
-   dotnet build
-   ```
+```powershell
+dotnet dev-certs https --trust
+```
 
-3. Run the application:
-   ```bash
-   dotnet run --project src/planora.API
-   ```
+2. Frontend (client):
 
-## Project Structure
+```powershell
+cd client
+npm install
+npm run dev
+```
 
-The solution follows Clean Architecture principles:
+Or from repository root using the npm scripts in `package.json`:
 
-- **planora.Domain**: Core entities
-- **planora.Application**: Use cases and business logic
-- **planora.Infrastructure**: External concerns like data access
-- **planora.API**: API endpoints and controllers
-- **planora.*.Tests**: Corresponding test projects
+```powershell
+npm run frontend:dev
+```
 
-## CI/CD Pipeline
+3. Tests (application layer):
 
-The project uses GitHub Actions for continuous integration and deployment with separate workflows:
-
-### Pull Request Workflows (Quality Gates)
-- **Backend CI**: Automated .NET builds, tests, and code coverage on backend changes
-- **Frontend CI**: Automated Node.js builds, tests, and linting on frontend changes
-- **Security Analysis**: CodeQL security scanning and dependency vulnerability checks
-
-### Main Branch Workflow (Deployment)
-- **Release & Deploy**: Semantic versioning, Docker image builds, and automated deployment to production
-- Publishes Docker images to GitHub Container Registry with proper tagging
-- Deploys both backend and frontend services to Coolify hosting platform
+```powershell
+dotnet test tests/planora.Application.Tests
+```
